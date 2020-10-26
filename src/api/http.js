@@ -89,7 +89,7 @@ export function updateWord(data) {
 //     params: data
 //   })
 // }
-/**
+/** 
  * 删除字典
  */
 export function deleteWord(data) {
