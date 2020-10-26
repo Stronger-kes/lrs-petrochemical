@@ -4,7 +4,8 @@ const Login = () => import("../views/login");
 const Home = () => import("../views/home/Home");
 const sysDict = () => import("../views/systemManagement/listUI");
 const User = () => import("../views/systemManagement/user");
-const Menu = () => import("../views/systemManagement/menuManagement");
+const Menu = () => import("../views/systemManagement/menuManagement/index.vue");
+const Department = () => import("../views/systemManagement/department/index.vue");
 const shopGoods = () => import("../views/shopGoods");
 const Reduced = () => import("../views/reduced");
 const Role = () => import("../views/systemManagement/role");
@@ -45,6 +46,12 @@ const routes = [
         name: "Menu",
         component: Menu,
         meta: {title: '菜单管理'}
+      },
+      {
+        path: "/system/dept",
+        name: "Department",
+        component: Department,
+        meta: {title: "部门管理"}
       },
       {
         path: "/manage/reduced",
