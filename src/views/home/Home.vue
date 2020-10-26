@@ -26,12 +26,17 @@
                 <span index="">{{ item.title }}</span>
               </template>
               <!-- 二级菜单 -->
-              <el-menu-item :index="v.href" v-for="(v, i) in item.childs" :key="i">
+              <el-menu-item :index="v.href + ''" v-for="(v, i) in item.childs" :key="i">
                 <template slot="title">
                   <span>{{ v.title }}</span>
                 </template>
               </el-menu-item>
-            </el-submenu>
+              <!-- 三级菜单
+              <el-submenu  v-for="(val,kep) item.childs.childs" :key="kep">
+                <span slot="title">选项4</span>
+                <el-menu-item index="1-4-1">选项1</el-menu-item>
+              </el-submenu>-->
+            </el-submenu> 
           </el-menu>
         </div>
       </el-aside>
@@ -46,11 +51,7 @@
           </div>
           <div class="but-right">
             <div class="btn-fullscreen" @click="handleFullScreen">
-              <el-tooltip
-                effect="dark"
-                :content="fullscreen ? `取消全屏` : `全屏`"
-                placement="bottom"
-              >
+              <el-tooltip effect="dark" :content="fullscreen ? `取消全屏` : `全屏`" placement="bottom">
                 <i class="el-icon-rank"></i>
               </el-tooltip>
             </div>
@@ -74,7 +75,6 @@
           </div>
         </el-header>
         <el-main>
-
           <router-view></router-view>
         </el-main>
       </el-container>
@@ -249,5 +249,9 @@ export default {
 }
 .el-main{
   background-color: #F9F9F9 ;
+}
+
+.el-submenu:hover {
+  border-right: 3px solid #409eff;
 }
 </style>

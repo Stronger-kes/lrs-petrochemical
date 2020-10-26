@@ -22,10 +22,12 @@ service.interceptors.request.use(config => {
 
 // 响应拦截
 service.interceptors.response.use(reslut => {
-    console.log(reslut.data.data, "响应拦截================>");
+    console.log(reslut,"响应拦截========111111111========>");
+    console.log(reslut.data.code,"响应拦截===========400000000=====>");
     let res = reslut;
     let status = res.status;
     let token = res.data.data;
+    console.log(token,"token=========================>")
     if (status == 200) {
         token && localStorage.setItem("token", token);
         Message({

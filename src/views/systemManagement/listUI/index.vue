@@ -240,7 +240,7 @@ export default {
         .then(() => {
           console.log(data.id);
           deleteWord(data.id).then((res) => {
-            console.log(res);
+            console.log(res,"删除----------------------->");
           });
           this.getList();
           this.$message({
@@ -254,6 +254,8 @@ export default {
             message: "已取消删除",
           });
         });
+
+
     },
     // 清空表单
     cleanForm() {
@@ -285,7 +287,7 @@ export default {
       };
       updateWord(data).then((res) => {
         console.log("修改字典接口", res);
-        if (res.data.code == 200) {
+        if (res.reslut.data.code && res.reslut.data.code === 200) {
           this.cleanForm();
           this.updataBox = false;
           this.getList();
@@ -312,16 +314,15 @@ export default {
       };
       addWord(data).then((res) => {
         console.log("添加字典接口", res);
-
-        // if (res.data.code == 200) {
-        //   this.cleanForm();
-        //   this.dialogFormVisible = false;
-        //   this.getList();
-        //   this.$message({
-        //     message: "添加字典成功",
-        //     type: "success",
-        //   });
-        // }
+        if (res.reslut.data.code && res.reslut.data.code === 200) {
+          this.cleanForm();
+          this.dialogFormVisible = false;
+          this.getList();
+          this.$message({
+            message: "添加字典成功",
+            type: "success",
+          });
+        }
       });
     },
     // 搜索按钮

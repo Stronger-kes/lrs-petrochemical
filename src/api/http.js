@@ -11,20 +11,20 @@ import request from "./request";
  */
 export const lrsLogin = (username, password, verifyCode) => request({
   url: '/login',
-    method: 'post',
-    params: {
-      username,
-      password,
-      verifyCode
-    }
+  method: 'post',
+  params: {
+    username,
+    password,
+    verifyCode
+  }
 })
 
 /**
  * 菜单列表接口
  */
 export const getMenu = () => request({
-  url : `/menu/yangming`,
-  method : "get",
+  url: `/menu/yangming`,
+  method: "get",
   // data
 })
 
@@ -41,49 +41,67 @@ export const storeList = () => request({
  * 添加门店接口
  **/
 
- export const addStore = (data) => request({
-    url: '/shop/addSysShop',
-    method: 'post',
-    params: data
- })
+export const addStore = (data) => request({
+  url: '/shop/addSysShop',
+  method: 'post',
+  params: data
+})
 
- /**
-  *  获取字典管理列表
-  */
- export const getWordList = (data) => request({
+/**
+ *  获取字典管理列表
+ */
+export const getWordList = (data) => request({
   url: '/sysDict/list?pageSize=' + data.pageSize + "&pageNum=" + data.pageNum + '&type=' + data.type,
   method: 'get',
   // params:data
- })
+})
 
- /**
-  * 
-  * 新增字典
-  */
- export const addWord = (data) => request({
+/**
+ * 
+ * 新增字典
+ */
+export const addWord = (data) => request({
   url: '/sysDict/save',
   method: 'post',
-  params:data
- })
+  params: data
+})
 
- // 
+// 
 /**
  * 修改字典
  */
-export const updateWord = (data) =>request({
-  url: '/sysDict/update',
-  method: 'post',
-  params:data
-})
+// export const updateWord = (data) => request({
+//   url: '/sysDict/update',
+//   method: 'post',
+//   params: data
+// })
 
+/**
+ * 
+ * 
+ */
+export function updateWord(data) {
+  return request({
+    url: '/sysDict/update',
+    method: 'get',
+    params: data
+  })
+}
 /**
  * 删除字典
  */
-export const deleteWord = (data) => ({
-  url: '/sysDict/delete/' + data,
-  method: 'get',
-  // params:data
-})
+// export const deleteWord = (data) => ({
+//   url: '/sysDict/delete/' + data,
+//   method: 'get',
+//   params: data
+// })
+export function deleteWord(data) {
+  return request({
+    url: '/sysDict/delete/' + data,
+    method: 'get'
+  })
+}
+
 
 // // 获取用户管理列表
 // export const getUser = (data) => request({
