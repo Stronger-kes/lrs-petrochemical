@@ -1,6 +1,6 @@
 <template>
   <el-main>
-    <router-view></router-view>
+    ffafdfsddsddddsds
   </el-main>
 </template>
 

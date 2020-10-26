@@ -13,16 +13,14 @@ router.beforeEach((to, from, next) => {
   const token = localStorage.getItem("token");
   if(to.path != "/") {
     if(!token) {
-      next({
-        path: '/'
-      })
+      next({path: '/'})
     }else {
       next();
     }
   }else {
     next();
   }
-})
+});
 
 
 
