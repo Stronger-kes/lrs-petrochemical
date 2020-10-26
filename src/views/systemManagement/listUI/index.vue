@@ -1,213 +1,201 @@
 <template>
-  <el-card class="box-card">
-    <div class="wrapper">
-      <div class="word_header">
-        <!-- 类型输入框 -->
-        <div class="header_left">
-          类型：
-          <el-input
-            v-model="typeInput"
-            placeholder="请输入类型"
-            class="type_input"
-          ></el-input>
-        </div>
-        <!-- 右侧 -->
-        <div class="header_right">
-          <el-button
-            type="primary"
-            icon="el-icon-search"
-            @click="typeClick"
-          ></el-button>
-          <el-button
-            type="primary"
-            icon="el-icon-refresh-right"
-            @click="refreshBtn"
-          ></el-button>
-          <el-dropdown trigger="click">
-            <!-- <span class="el-dropdown-link"> -->
-            <el-button
-              type="primary"
-              icon="el-icon-edit"
-              class="edit_btn"
-            ></el-button>
-            <!-- </span> -->
-            <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item
-                icon="el-icon-circle-plus"
-                @click.native="openAdd"
-                >新增用户</el-dropdown-item
-              >
-              <el-dropdown-item icon="el-icon-delete-solid"
-                >删除用户</el-dropdown-item
-              >
-            </el-dropdown-menu>
-          </el-dropdown>
-          <!-- 新增用户弹框 -->
-          <el-dialog title="新增字典" :visible.sync="dialogFormVisible">
-            <div class="add_box">
-              键值：
-              <el-input
-                class="width_input"
-                v-model="keyText"
-                placeholder="请输入类型"
-              ></el-input>
-            </div>
-            <div class="add_box">
-              标签：
-              <el-input
-                class="width_input"
-                v-model="labelText"
-                placeholder="请输入类型"
-              ></el-input>
-            </div>
-            <div class="add_box">
-              类型：
-              <el-input
-                class="width_input"
-                v-model="typeText"
-                placeholder="请输入类型"
-              ></el-input>
-            </div>
-            <div class="add_box">
-              排序：
-              <el-input
-                class="width_input"
-                v-model="sortText"
-                placeholder="请输入类型"
-              ></el-input>
-            </div>
-            <div class="add_box">
-              描述：
-              <el-input
-                type="textarea"
-                class="width_input"
-                v-model="descText"
-              ></el-input>
-            </div>
-
-            <div slot="footer" class="dialog-footer">
-              <el-button @click="dialogFormVisible = false">取 消</el-button>
-              <el-button type="primary" @click="AddClick" :plain="true"
-                >提交</el-button
-              >
-            </div>
-          </el-dialog>
-          <!-- 修改字典 -->
-          <el-dialog title="修改字典" :visible.sync="updataBox">
-            <div class="add_box">
-              键值：
-              <el-input
-                class="width_input"
-                v-model="keyText"
-                placeholder="请输入类型"
-              ></el-input>
-            </div>
-            <div class="add_box">
-              标签：
-              <el-input
-                class="width_input"
-                v-model="labelText"
-                placeholder="请输入类型"
-              ></el-input>
-            </div>
-            <div class="add_box">
-              类型：
-              <el-input
-                class="width_input"
-                v-model="typeText"
-                placeholder="请输入类型"
-              ></el-input>
-            </div>
-            <div class="add_box">
-              排序：
-              <el-input
-                class="width_input"
-                v-model="sortText"
-                placeholder="请输入类型"
-              ></el-input>
-            </div>
-            <div class="add_box">
-              描述：
-              <el-input
-                type="textarea"
-                class="width_input"
-                v-model="descText"
-              ></el-input>
-            </div>
-
-            <div slot="footer" class="dialog-footer">
-              <el-button @click="updataBox = false">取 消</el-button>
-              <el-button type="primary" @click="updateClick" :plain="true"
-                >提交</el-button
-              >
-            </div>
-          </el-dialog>
-        </div>
+  <div class="wrapper">
+    <div class="word_header">
+      <!-- 类型输入框 -->
+      <div class="header_left">
+        类型：
+        <el-input
+          v-model="typeInput"
+          placeholder="请输入类型"
+          class="type_input"
+        ></el-input>
       </div>
-      <!-- 表格 -->
-      <div class="table_wrapper">
-        <el-table
-          stripe
-          ref="multipleTable"
-          :data="tableData"
-          tooltip-effect="dark"
-          style="width: 100%"
-          @selection-change="handleSelectionChange"
-        >
-          <el-table-column type="selection"> </el-table-column>
-          <el-table-column label="类型">
-            <template slot-scope="scope">{{ scope.row.type }}</template>
-          </el-table-column>
-          <el-table-column prop="label" label="标签"> </el-table-column>
-          <el-table-column
-            prop="description"
-            label="描述"
-            show-overflow-tooltip
-          >
-          </el-table-column>
-          <el-table-column prop="value" label="数值"> </el-table-column>
-          <el-table-column fixed="right" label="操作">
-            <template slot-scope="scope">
-              <el-button
-                type="text"
-                size="small"
-                @click="openUpdata(scope.row)"
-              >
-                <i class="el-icon-s-tools"></i>
-              </el-button>
-              <el-button
-                type="text"
-                size="small"
-                @click="openDelete(scope.row)"
-              >
-                <i class="el-icon-delete button_del"></i>
-              </el-button>
-            </template>
-          </el-table-column>
-        </el-table>
-        <!-- 分页 -->
-        <div class="block">
-          <el-pagination
-            background
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
-            :current-page="pageNum"
-            :page-sizes="[5, 10, 20, 30, 50, 100]"
-            :page-size="pageSize"
-            layout="total, sizes, prev, pager, next, jumper"
-            :total="totalCount"
-          >
-          </el-pagination>
-        </div>
+      <!-- 右侧 -->
+      <div class="header_right">
+        <el-button
+          type="primary"
+          icon="el-icon-search"
+          @click="typeClick"
+        ></el-button>
+        <el-button
+          type="primary"
+          icon="el-icon-refresh-right"
+          @click="refreshBtn"
+        ></el-button>
+        <el-dropdown trigger="click">
+          <!-- <span class="el-dropdown-link"> -->
+          <el-button
+            type="primary"
+            icon="el-icon-edit"
+            class="edit_btn"
+          ></el-button>
+          <!-- </span> -->
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item icon="el-icon-circle-plus" @click.native="openAdd"
+              >新增用户</el-dropdown-item
+            >
+            <el-dropdown-item icon="el-icon-delete-solid"
+              >删除用户</el-dropdown-item
+            >
+          </el-dropdown-menu>
+        </el-dropdown>
+        <!-- 新增用户弹框 -->
+        <el-dialog title="新增字典" :visible.sync="dialogFormVisible">
+          <div class="add_box">
+            键值：
+            <el-input
+              class="width_input"
+              v-model="keyText"
+              placeholder="请输入类型"
+            ></el-input>
+          </div>
+          <div class="add_box">
+            标签：
+            <el-input
+              class="width_input"
+              v-model="labelText"
+              placeholder="请输入类型"
+            ></el-input>
+          </div>
+          <div class="add_box">
+            类型：
+            <el-input
+              class="width_input"
+              v-model="typeText"
+              placeholder="请输入类型"
+            ></el-input>
+          </div>
+          <div class="add_box">
+            排序：
+            <el-input
+              class="width_input"
+              v-model="sortText"
+              placeholder="请输入类型"
+            ></el-input>
+          </div>
+          <div class="add_box">
+            描述：
+            <el-input
+              type="textarea"
+              class="width_input"
+              v-model="descText"
+            ></el-input>
+          </div>
+
+          <div slot="footer" class="dialog-footer">
+            <el-button @click="dialogFormVisible = false">取 消</el-button>
+            <el-button type="primary" @click="AddClick" :plain="true"
+              >提交</el-button
+            >
+          </div>
+        </el-dialog>
+        <!-- 修改字典 -->
+        <el-dialog title="修改字典" :visible.sync="updataBox">
+          <div class="add_box">
+            键值：
+            <el-input
+              class="width_input"
+              v-model="keyText"
+              placeholder="请输入类型"
+            ></el-input>
+          </div>
+          <div class="add_box">
+            标签：
+            <el-input
+              class="width_input"
+              v-model="labelText"
+              placeholder="请输入类型"
+            ></el-input>
+          </div>
+          <div class="add_box">
+            类型：
+            <el-input
+              class="width_input"
+              v-model="typeText"
+              placeholder="请输入类型"
+            ></el-input>
+          </div>
+          <div class="add_box">
+            排序：
+            <el-input
+              class="width_input"
+              v-model="sortText"
+              placeholder="请输入类型"
+            ></el-input>
+          </div>
+          <div class="add_box">
+            描述：
+            <el-input
+              type="textarea"
+              class="width_input"
+              v-model="descText"
+            ></el-input>
+          </div>
+
+          <div slot="footer" class="dialog-footer">
+            <el-button @click="updataBox = false">取 消</el-button>
+            <el-button type="primary" @click="updateClick" :plain="true"
+              >提交</el-button
+            >
+          </div>
+        </el-dialog>
       </div>
     </div>
-  </el-card>
+    <!-- 表格 -->
+    <div class="table_wrapper">
+      <el-table
+        stripe
+        ref="multipleTable"
+        :data="tableData"
+        tooltip-effect="dark"
+        style="width: 100%"
+        @selection-change="handleSelectionChange"
+      >
+        <el-table-column type="selection"> </el-table-column>
+        <el-table-column label="类型">
+          <template slot-scope="scope">{{ scope.row.type }}</template>
+        </el-table-column>
+        <el-table-column prop="label" label="标签"> </el-table-column>
+        <el-table-column prop="description" label="描述" show-overflow-tooltip>
+        </el-table-column>
+        <el-table-column prop="value" label="数值"> </el-table-column>
+        <el-table-column fixed="right" label="操作">
+          <template slot-scope="scope">
+            <el-button type="text" size="small" @click="openUpdata(scope.row)">
+              <i class="el-icon-s-tools"></i>
+            </el-button>
+            <el-button type="text" size="small" @click="openDelete(scope.row)">
+              <i class="el-icon-delete button_del"></i>
+            </el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <!-- 分页 -->
+      <div class="block">
+        <el-pagination
+          background
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="pageNum"
+          :page-sizes="[5, 10, 20, 30, 50, 100]"
+          :page-size="pageSize"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="totalCount"
+        >
+        </el-pagination>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
 import { getWordList, addWord, deleteWord, updateWord } from "@/api/http.js";
+// import Page from "../../components/common/Page";
+
 export default {
-  name: "listUI",
+  components: {
+    // Page,
+  },
   data() {
     return {
       typeInput: "",
@@ -226,19 +214,20 @@ export default {
       formLabelWidth: "120px",
     };
   },
-  mounted() {
-    this.getList();
-  },
   methods: {
     // 打开删除弹框
     openDelete(data) {
+      // var id = data.id
+      // deleteWord(id).then((res) => {
+      //       console.log('删除',res);
+      // });
       this.$confirm("确定删除该字典?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning",
       })
         .then(() => {
-          console.log(data.id);
+          console.log('要删除的字典',data.id);
           deleteWord(data.id).then((res) => {
             console.log(res,"删除----------------------->");
           });
@@ -276,7 +265,7 @@ export default {
       this.updataBox = true;
     },
     // 提交修改
-    updateClick() {
+    updateClick(){
       let data = {
         value: this.keyText,
         label: this.labelText,
@@ -314,7 +303,7 @@ export default {
       };
       addWord(data).then((res) => {
         console.log("添加字典接口", res);
-        if (res.reslut.data.code && res.reslut.data.code === 200) {
+        if (res.reslut.data.code == 200) {
           this.cleanForm();
           this.dialogFormVisible = false;
           this.getList();
@@ -343,6 +332,7 @@ export default {
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
       this.pageNum = val;
+      //   this.$emit("getPageNum", val);
       this.getList();
     },
     // 表格全选
@@ -350,23 +340,26 @@ export default {
       this.multipleSelection = val;
     },
     // 获取字典列表
-    async getList() {
-        let data = {
-            pageSize: this.pageSize,
-            pageNum: this.pageNum,
-            type: this.typeInput,
-        };
-        const res = await getWordList(data).then((res));
-        if(res.status && res.status === 200) {
-            this.totalCount = res.reslut.data.data.total;
-            this.tableData = res.reslut.data.data.rows;
-        }
+    getList() {
+      let data = {
+        pageSize: this.pageSize,
+        pageNum: this.pageNum,
+        type: this.typeInput,
+      };
+      getWordList(data).then((res) => {
+        console.log(11111,res.reslut);
+        this.totalCount = res.reslut.data.data.total;
+        this.tableData = res.reslut.data.data.rows;
+      });
     },
+  },
+  mounted() {
+    this.getList();
   },
 };
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 .wrapper {
   background-color: #fff;
   /* height: 100%; */

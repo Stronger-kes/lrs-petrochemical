@@ -70,50 +70,81 @@ export const addWord = (data) => request({
 /**
  * 修改字典
  */
-// export const updateWord = (data) => request({
-//   url: '/sysDict/update',
-//   method: 'post',
-//   params: data
-// })
+export function updateWord(data) {
+  return request({
+      url: '/sysDict/update',
+      method: 'post',
+      params:data
+  })
+}
 
 /**
  * 
  * 
  */
-export function updateWord(data) {
-  return request({
-    url: '/sysDict/update',
-    method: 'get',
-    params: data
-  })
-}
+// export function updateWord(data) {
+//   return request({
+//     url: '/sysDict/update',
+//     method: 'get',
+//     params: data
+//   })
+// }
 /**
  * 删除字典
  */
-// export const deleteWord = (data) => ({
-//   url: '/sysDict/delete/' + data,
-//   method: 'get',
-//   params: data
-// })
 export function deleteWord(data) {
   return request({
-    url: '/sysDict/delete/' + data,
-    method: 'get'
+      url: '/sysDict/delete/' + data,
+      method: 'get',
+      // params:data
   })
 }
 
+// 获取用户管理列表
+export function getUser(data) {
+  return request({
+      url: '/user/list?pageNum=' + data.pageNum + 
+      "&pageSize=" + data.pageSize + 
+      '&username=' + data.username + 
+      '&createTimeFrom=' + data.createTimeFrom + 
+      '&createTimeTo=' + data.createTimeTo + 
+      '&status=' + data.status + 
+      '&mobile=' + data.mobile + 
+      '&deptId=' + data.deptId + 
+      '&sex=' + data.sex,
+      method: 'get',
+      // params:data
+  })
+}
 
-// // 获取用户管理列表
-// export const getUser = (data) => request({
-//   url: '/user/list?pageNum=' + data.pageNum + 
-//       "&pageSize=" + data.pageSize + 
-//       '&username=' + data.username + 
-//       '&createTimeFrom=' + data.createTimeFrom + 
-//       '&createTimeTo=' + data.createTimeTo + 
-//       '&status=' + data.status + 
-//       '&mobile=' + data.mobile + 
-//       '&deptId=' + data.deptId + 
-//       '&sex=' + data.sex,
-//       method: 'get',
-//       // params:data
-// })
+// 新增用户
+export function addUser(data) {
+  return request({
+      url: '/user',
+      method: 'post',
+      params:data
+  })
+}
+
+// 获取角色列表
+export function roleList() {
+  return request({
+      url: '/role/list',
+      method: 'get',
+      // params:{
+
+      // }
+  })
+}
+
+// 获取部门列表
+export function branchList() {
+  return request({
+      url: '/dept/select/tree',
+      method: 'get',
+      // params:{
+
+      // }
+  })
+}
+
