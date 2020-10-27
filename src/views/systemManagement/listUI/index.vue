@@ -190,8 +190,6 @@
 
 <script>
 import { getWordList, addWord, deleteWord, updateWord } from "@/api/http.js";
-// import Page from "../../components/common/Page";
-
 export default {
   components: {
     // Page,
@@ -262,7 +260,7 @@ export default {
       this.updataBox = true;
     },
     // 提交修改
-    updateClick(){
+    updateClick() {
       let data = {
         id:this.updateId,
         value: this.keyText,
@@ -345,7 +343,6 @@ export default {
         type: this.typeInput,
       };
       getWordList(data).then((res) => {
-        console.log(11111,res.reslut);
         this.totalCount = res.reslut.data.data.total;
         this.tableData = res.reslut.data.data.rows;
       });

@@ -22,16 +22,17 @@ service.interceptors.request.use(config => {
 
 // 响应拦截
 service.interceptors.response.use(reslut => {
-    console.log(reslut.data.data, "响应拦截================>");
+    console.log(reslut,"响应拦截================>");
     let res = reslut;
     let status = res.status;
     let token = res.data.data;
+    console.log(token,"token=========================>")
     if (status == 200) {
         token && localStorage.setItem("token", token);
-        Message({
-            message: '登陆成功',
-            type: "success"
-        });
+        // Message({
+        //     message: '登陆成功',
+        //     type: "success"
+        // });
         return {
             flag: 1,
             reslut: res,

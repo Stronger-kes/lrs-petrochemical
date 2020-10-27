@@ -113,7 +113,7 @@ export default {
               this.$message.error("登录失败");
             } else {
               localStorage.setItem("token", res.reslut.data.data);
-              console.log(this.$route.query.redirect)
+              console.log(localStorage.setItem("token", res.reslut.data.data))
               this.$router.push({
                  path:"/index"
               });

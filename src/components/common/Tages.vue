@@ -60,7 +60,7 @@ import Bus from '../../bus';
             }
         },
         watch:{
-            $route(newValue, oldValue){
+            $route(newValue){
                 this.setTags(newValue);
             }
         },

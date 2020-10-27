@@ -1,49 +1,53 @@
 <template>
-  <div class="home">
-    <el-container>
-      <Sidebar :onShow="isCollapse"></Sidebar>
-      <el-container>
-        <el-header>
-          <Header></Header>
-          <Tages></Tages>
-        </el-header>
-        <div class="box-card">
-          sdadad
-        </div>
-        <el-main>
-          <div class="content">
-                <transition name="move" mode="out-in">
-                    <keep-alive :include="tagsList">
-                        <router-view></router-view>
-                    </keep-alive>
-                </transition>
-                <el-backtop target=".content"></el-backtop>
-            </div>
-        </el-main>
-      </el-container>
-    </el-container>
+  <div>
+    <!-- 全屏显示 -->
+    <div class="toggle-button">
+      <div class="toggle-button" @click="collapseList">
+        <i class="el-icon-s-fold ioionpnp" v-show="!collapse"></i>
+        <i class="el-icon-s-unfold ioionpnp" v-show="collapse"></i>
+      </div>
+    </div>
+    <div class="but-right">
+      <div class="btn-fullscreen" @click="handleFullScreen">
+        <el-tooltip
+          effect="dark"
+          :content="fullscreen ? `取消全屏` : `全屏`"
+          placement="bottom"
+        >
+          <i class="el-icon-rank"></i>
+        </el-tooltip>
+      </div>
+      <div class="dropdown" style="cursor: pointer">
+        <el-dropdown>
+          <span class="el-dropdown-link">
+            <span class="headp-portrait"></span>
+            <span class="user-name">yamgming</span>
+          </span>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item>个人中心</el-dropdown-item>
+            <el-dropdown-item>密码修改</el-dropdown-item>
+            <el-dropdown-item>项目地址</el-dropdown-item>
+            <el-dropdown-item divided @click.native="goLogOut"
+              >退出登陆</el-dropdown-item
+            >
+          </el-dropdown-menu>
+        </el-dropdown>
+      </div>
+    </div>
   </div>
 </template>
+
 <script>
-import Tages from "@/components/common/Tages";
-import Sidebar from "../home/Sidebar";
-import Header from "../home/Header"
-// import Bus from '../../bus';
+import Bus from "../../bus";
 export default {
   name: "Home",
-  components: {Sidebar,Header,Tages},
-  data() {
+  data(){
     return {
-      collapse: false,
-      isCollapse: false,
-      fullscreen: false,
-      getList: []
-    };
-  },
-  created() {
-    
+      collapse: false
+    }
   },
   methods: {
+    // 点击收缩
     handleFullScreen() {
       let element = document.documentElement;
       if (this.fullscreen) {
@@ -70,60 +74,23 @@ export default {
       }
       this.fullscreen = !this.fullscreen;
     },
-    // 点击收缩
-    collapseList() {
-      this.isCollapse = !this.isCollapse;
-    },
     // 推出登陆
     goLogOut() {
-      // //清除token
       localStorage.removeItem("token");
-      //返回到登录页
       this.$router.push({ path: "/" });
     },
-  },
+    collapseList() {
+      this.collapse = !this.collapse;
+      // Bus.$on('collapse', msg => {
+          // this.collapse = msg;
+          Bus.$emit('collapse-content', this.collapse);
+      // });
+    }
+  }
 };
 </script>
 
 <style lang="scss" scoped>
-.el-container {
-  height: 100vh;
-  padding: 0;
-  margin: 0;
-  width: 100vw;
-}
-.el-header {
-  color: #333;
-  text-align: center;
-  line-height: 60px;
-}
-.el-header {
-  height: 50px !important;
-  border-bottom: 1px solid #ccc;
-}
-.img_login {
-  height: 45px;
-  width: 100%;
-  padding-top: 15px;
-}
-.img_login img {
-  width: 75%;
-  display: block;
-  margin: 0 auto;
-}
-
-.home-menu {
-  margin-top: 29px;
-  overflow: hidden;
-}
-
-.el-aside {
-  background-color: #333;
-}
-.is-opened {
-  width: 254px !important;
-}
-
 .toggle-button,
 .btn-fullscreen {
   float: left;
@@ -171,13 +138,14 @@ export default {
   margin-top: 13px;
   cursor: pointe;
 }
-
+.ioionpnp {
+  font-size: 23px;
+}
 .el-menu-item.is-active {
      color: #fff !important;
 }
 .el-main{
   background-color: #F9F9F9 ;
-  padding: 15px;
 }
 
 .el-submenu:hover {
