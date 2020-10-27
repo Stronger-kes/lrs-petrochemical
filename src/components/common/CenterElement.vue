@@ -13,5 +13,6 @@ export default {
 <style lang="scss" scoped>
 .el-main {
   padding: 15px;
+  background-color: #fff;
 }
 </style>

@@ -204,6 +204,7 @@ export default {
       typeText: "",
       sortText: "",
       descText: "",
+      updateId:-1,
       totalCount: 0,
       tableData: [],
       multipleSelection: [],
@@ -217,10 +218,6 @@ export default {
   methods: {
     // 打开删除弹框
     openDelete(data) {
-      // var id = data.id
-      // deleteWord(id).then((res) => {
-      //       console.log('删除',res);
-      // });
       this.$confirm("确定删除该字典?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
@@ -228,7 +225,8 @@ export default {
       })
         .then(() => {
           console.log('要删除的字典',data.id);
-          deleteWord(data.id).then((res) => {
+          var id = data.id
+          deleteWord(id).then((res) => {
             console.log(res);
           });
           this.getList();
@@ -255,6 +253,7 @@ export default {
     // 打开修改
     openUpdata(data) {
       // console.log('修改对象',data)
+      this.updateId = data.id
       this.keyText = data.value;
       this.labelText = data.label;
       this.typeText = data.type;
@@ -265,6 +264,7 @@ export default {
     // 提交修改
     updateClick(){
       let data = {
+        id:this.updateId,
         value: this.keyText,
         label: this.labelText,
         type: this.typeText,
@@ -274,7 +274,7 @@ export default {
       };
       updateWord(data).then((res) => {
         console.log("修改字典接口", res);
-        if (res.data.code == 200) {
+        if (res.reslut.data.code == 200) {
           this.cleanForm();
           this.updataBox = false;
           this.getList();

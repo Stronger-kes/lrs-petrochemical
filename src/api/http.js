@@ -9,64 +9,71 @@ import request from "./request";
 /**
  *  login登陆接口
  */
-export const lrsLogin = (username, password, verifyCode) => request({
-  url: '/login',
-    method: 'post',
-    params: {
-      username,
-      password,
-      verifyCode
-    }
-})
+export function lrsLogin(username, password, verifyCode) {
+    return request({
+      url: '/login',
+      method: 'post',
+      params: {
+        username,
+        password,
+        verifyCode
+      }
+    })
+}
 
 /**
  * 菜单列表接口
  */
-export const getMenu = () => request({
-  url : `/menu/yangming`,
-  method : "get",
-  // data
-})
-
+export function getMenu() {
+  return request({
+    url: `/menu/yangming`,
+    method: "get",
+    // data
+  })
+}
 /**
  * 查询门店接口
  */
-export const storeList = () => request({
-  url: '/shop/sysShopList',
+export function storeList() {
+  return request({
+    url: '/shop/sysShopList',
   method: 'post',
   // params
-})
-
+  })
+}
 /**
  * 添加门店接口
  **/
-
- export const addStore = (data) => request({
+export function addStore(data) {
+  return request({
     url: '/shop/addSysShop',
     method: 'post',
     params: data
- })
+  })
+}
 
- /**
-  *  获取字典管理列表
-  */
- export const getWordList = (data) => request({
-  url: '/sysDict/list?pageSize=' + data.pageSize + "&pageNum=" + data.pageNum + '&type=' + data.type,
-  method: 'get',
-  // params:data
- })
-
- /**
-  * 
-  * 新增字典
-  */
- export const addWord = (data) => request({
-  url: '/sysDict/save',
-  method: 'post',
-  params:data
- })
-
- // 
+/**
+ *  获取字典管理列表
+ */
+export function getWordList(data) {
+  return request({
+    url: '/sysDict/list?pageSize=' + data.pageSize + "&pageNum=" + data.pageNum + '&type=' + data.type,
+    method: 'get',
+    // params:data
+  })
+}
+/**
+ * 
+ * 新增字典
+ */
+export function addWord(data){
+  return request({
+    url: '/sysDict/save',
+    method: 'post',
+    params: data
+  })
+}
+// 
 /**
  * 修改字典
  */
@@ -78,7 +85,7 @@ export function updateWord(data) {
   })
 }
 
-/**
+/** 
  * 删除字典
  */
 export function deleteWord(data) {
@@ -136,4 +143,51 @@ export function branchList() {
       // }
   })
 }
+
+
+
+// 删除用户
+export function deleteUser(data) {
+  return request({
+    url: '/user/delete/' + data,
+    method: 'get',
+  })
+}
+
+// 修改用户
+export function updateUser(data) {
+  return request({
+    url: '/user/update',
+    method: 'post',
+    params: data
+  })
+}
+
+// 获取角色列表
+export function getRoleList(data) {
+  return request({
+    url: '/role/list?pageNum=' + data.pageNum + "&pageSize=" + data.pageSize,
+    method: 'get',
+  })
+}
+
+// 树形菜单
+export function menuTree() {
+  return request({
+    url: '/menu/tree',
+    method: "get",
+    // data
+  })
+}
+
+// 新增角色
+export function addRole(data) {
+  return request({
+      url: '/role/add',
+      method: 'post',
+      params:data
+  })
+}
+
+
 
