@@ -22,7 +22,7 @@ service.interceptors.request.use(config => {
 
 // 响应拦截
 service.interceptors.response.use(reslut => {
-    console.log(reslut,"响应拦截========111111111========>");
+    console.log(reslut,"响应拦截================>");
     let res = reslut;
     let status = res.status;
     let token = res.data.data;
