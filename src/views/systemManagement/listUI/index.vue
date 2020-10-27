@@ -217,24 +217,20 @@ export default {
   methods: {
     // 打开删除弹框
     openDelete(data) {
-      // var id = data.id
-      // deleteWord(id).then((res) => {
-      //       console.log('删除',res);
-      // });
       this.$confirm("确定删除该字典?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning",
       })
         .then(() => {
-          console.log('要删除的字典',data.id);
+          console.log("要删除的字典", data.id);
           deleteWord(data.id).then((res) => {
-            console.log(res,"删除----------------------->");
-          });
-          this.getList();
-          this.$message({
-            type: "success",
-            message: "删除成功!",
+            console.log(res, "删除----------------------->");
+            this.getList();
+            this.$message({
+              type: "success",
+              message: "删除成功!",
+            });
           });
         })
         .catch(() => {
@@ -243,8 +239,6 @@ export default {
             message: "已取消删除",
           });
         });
-
-
     },
     // 清空表单
     cleanForm() {
@@ -265,7 +259,7 @@ export default {
       this.updataBox = true;
     },
     // 提交修改
-    updateClick(){
+    updateClick() {
       let data = {
         value: this.keyText,
         label: this.labelText,
@@ -347,7 +341,7 @@ export default {
         type: this.typeInput,
       };
       getWordList(data).then((res) => {
-        console.log(11111,res.reslut);
+        console.log(11111, res.reslut);
         this.totalCount = res.reslut.data.data.total;
         this.tableData = res.reslut.data.data.rows;
       });

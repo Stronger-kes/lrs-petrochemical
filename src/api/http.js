@@ -9,63 +9,70 @@ import request from "./request";
 /**
  *  login登陆接口
  */
-export const lrsLogin = (username, password, verifyCode) => request({
-  url: '/login',
-  method: 'post',
-  params: {
-    username,
-    password,
-    verifyCode
-  }
-})
+export function lrsLogin(username, password, verifyCode) {
+    return request({
+      url: '/login',
+      method: 'post',
+      params: {
+        username,
+        password,
+        verifyCode
+      }
+    })
+}
 
 /**
  * 菜单列表接口
  */
-export const getMenu = () => request({
-  url: `/menu/yangming`,
-  method: "get",
-  // data
-})
-
+export function getMenu() {
+  return request({
+    url: `/menu/yangming`,
+    method: "get",
+    // data
+  })
+}
 /**
  * 查询门店接口
  */
-export const storeList = () => request({
-  url: '/shop/sysShopList',
+export function storeList() {
+  return request({
+    url: '/shop/sysShopList',
   method: 'post',
   // params
-})
-
+  })
+}
 /**
  * 添加门店接口
  **/
-
-export const addStore = (data) => request({
-  url: '/shop/addSysShop',
-  method: 'post',
-  params: data
-})
+export function addStore(data) {
+  return request({
+    url: '/shop/addSysShop',
+    method: 'post',
+    params: data
+  })
+}
 
 /**
  *  获取字典管理列表
  */
-export const getWordList = (data) => request({
-  url: '/sysDict/list?pageSize=' + data.pageSize + "&pageNum=" + data.pageNum + '&type=' + data.type,
-  method: 'get',
-  // params:data
-})
-
+export function getWordList(data) {
+  return request({
+    url: '/sysDict/list?pageSize=' + data.pageSize + "&pageNum=" + data.pageNum + '&type=' + data.type,
+    method: 'get',
+    // params:data
+  })
+}
 /**
  * 
  * 新增字典
  */
-export const addWord = (data) => request({
-  url: '/sysDict/save',
-  method: 'post',
-  params: data
-})
-
+export function addWord(data){
+  return request({
+    url: '/sysDict/save',
+    method: 'post',
+    params: data
+  })
+}
 // 
 /**
  * 修改字典
@@ -78,17 +85,6 @@ export function updateWord(data) {
   })
 }
 
-/**
- * 
- * 
- */
-// export function updateWord(data) {
-//   return request({
-//     url: '/sysDict/update',
-//     method: 'get',
-//     params: data
-//   })
-// }
 /** 
  * 删除字典
  */
