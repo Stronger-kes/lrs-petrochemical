@@ -189,5 +189,30 @@ export function addRole(data) {
   })
 }
 
+/**
+ * 上传图片
+ */
+export function UnploadPictures(data) {
+  return request({
+    url:'/upload/uploadImage',
+    method: 'post',
+    params: data
+  })
+}
+
+/**
+ * 名称：商品管理页面
+ * URL: "/coupon/pageList"
+ * 请求方式: POST
+ */
+
+ export function getPageList(data) {
+    return request({
+      url: '/shopGoods/list',
+      method: 'post',
+      params: data
+    })
+ }
+
 
 

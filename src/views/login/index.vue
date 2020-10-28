@@ -108,12 +108,10 @@ export default {
           this.loginForm.verifyCode
         ).then(
           (res) => {
-            console.log(res)
             if (res.flag !== 1) {
               this.$message.error("登录失败");
             } else {
               localStorage.setItem("token", res.reslut.data.data);
-              console.log(localStorage.setItem("token", res.reslut.data.data))
               this.$router.push({
                  path:"/index"
               });

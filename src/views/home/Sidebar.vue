@@ -59,7 +59,7 @@ export default {
     this.getMenuList();
     Bus.$on('collapse-content', msg => {
              this.collapse = msg;
-            Bus.$emit('collapse-content', msg);
+            // Bus.$emit('collapse-content', msg);
             
       });
   },

@@ -43,7 +43,8 @@ export default {
   name: "Home",
   data(){
     return {
-      collapse: false
+      collapse: false,
+      fullscreen: false,
     }
   },
   methods: {
@@ -81,10 +82,10 @@ export default {
     },
     collapseList() {
       this.collapse = !this.collapse;
-      // Bus.$on('collapse', msg => {
-          // this.collapse = msg;
+      Bus.$on('collapse', msg => {
+          this.collapse = msg;
           Bus.$emit('collapse-content', this.collapse);
-      // });
+      });
     }
   }
 };

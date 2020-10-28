@@ -5,7 +5,7 @@
       <el-container>
         <el-header>
           <Header></Header>
-          <Tages></Tages>
+          <!-- <Tages></Tages> -->
         </el-header>
         <div class="box-card">
           sdadad
@@ -13,7 +13,7 @@
         <el-main>
           <div class="content">
                 <transition name="move" mode="out-in">
-                    <keep-alive :include="tagsList">
+                    <keep-alive>
                         <router-view></router-view>
                     </keep-alive>
                 </transition>
@@ -25,13 +25,13 @@
   </div>
 </template>
 <script>
-import Tages from "@/components/common/Tages";
+// import Tages from "@/components/common/Tages";
 import Sidebar from "../home/Sidebar";
 import Header from "../home/Header"
 // import Bus from '../../bus';
 export default {
   name: "Home",
-  components: {Sidebar,Header,Tages},
+  components: {Sidebar,Header},
   data() {
     return {
       collapse: false,
@@ -40,48 +40,8 @@ export default {
       getList: []
     };
   },
-  created() {
-    
-  },
-  methods: {
-    handleFullScreen() {
-      let element = document.documentElement;
-      if (this.fullscreen) {
-        if (document.exitFullscreen) {
-          document.exitFullscreen();
-        } else if (document.webkitCancelFullScreen) {
-          document.webkitCancelFullScreen();
-        } else if (document.mozCancelFullScreen) {
-          document.mozCancelFullScreen();
-        } else if (document.msExitFullscreen) {
-          document.msExitFullscreen();
-        }
-      } else {
-        if (element.requestFullscreen) {
-          element.requestFullscreen();
-        } else if (element.webkitRequestFullScreen) {
-          element.webkitRequestFullScreen();
-        } else if (element.mozRequestFullScreen) {
-          element.mozRequestFullScreen();
-        } else if (element.msRequestFullscreen) {
-          // IE11
-          element.msRequestFullscreen();
-        }
-      }
-      this.fullscreen = !this.fullscreen;
-    },
-    // 点击收缩
-    collapseList() {
-      this.isCollapse = !this.isCollapse;
-    },
-    // 推出登陆
-    goLogOut() {
-      // //清除token
-      localStorage.removeItem("token");
-      //返回到登录页
-      this.$router.push({ path: "/" });
-    },
-  },
+  created() {},
+  methods: {},
 };
 </script>
 

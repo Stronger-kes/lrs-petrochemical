@@ -19,6 +19,7 @@ const TimedTask = () => import("../views/askScheduling/timed");
 const Configure = () => import("../views/codeGeneration/configure")
 const Generation = () => import("../views/codeGeneration/generation");
 const Eximport = () => import("../views/otherModules/Eximport");
+const addDiscount = () =>import('../views/shopGoods/addDiscount.vue')
 Vue.use(VueRouter);
 
 const routes = [
@@ -72,6 +73,12 @@ const routes = [
         name: "shopGoods",
         component: shopGoods,
         meta: { title: '商品管理' }
+      },
+      {
+        path: "/shopGoods/addcount",
+        name: "addDiscount",
+        component: addDiscount,
+        meta: { title: '添加商品'}
       },
       {
         path: "/monitor/online",
