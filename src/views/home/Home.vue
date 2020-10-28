@@ -5,7 +5,7 @@
       <el-container>
         <el-header>
           <Header></Header>
-          <Tages></Tages>
+          <!-- <Tages></Tages> -->
         </el-header>
         <div class="box-card">
           sdadad
@@ -13,7 +13,7 @@
         <el-main>
           <div class="content">
                 <transition name="move" mode="out-in">
-                    <keep-alive :include="tagsList">
+                    <keep-alive>
                         <router-view></router-view>
                     </keep-alive>
                 </transition>
@@ -25,19 +25,23 @@
   </div>
 </template>
 <script>
-import Tages from "@/components/common/Tages";
+// import Tages from "@/components/common/Tages";
 import Sidebar from "../home/Sidebar";
 import Header from "../home/Header"
 // import Bus from '../../bus';
 export default {
   name: "Home",
-  components: {Sidebar,Header,Tages},
+  components: {
+    Sidebar,
+    Header,
+    // Tages
+  },
   data() {
     return {
       collapse: false,
       isCollapse: false,
       fullscreen: false,
-      getList: []
+      getList: [],
     };
   },
   created() {

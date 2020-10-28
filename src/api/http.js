@@ -189,5 +189,49 @@ export function addRole(data) {
   })
 }
 
+// 删除角色
+export function deleteRole(data) {
+  return request({
+    url: '/role/delete/' + data,
+    method: 'delete',
+  })
+}
+
+// 修改用户
+export function updateRole(data) {
+  return request({
+    url: '/role/update',
+    method: 'post',
+    params: data
+  })
+}
+
+// 新增菜单
+export function addMenu(data) {
+  return request({
+      url: '/menu',
+      method: 'post',
+      params:data
+  })
+}
+
+// 修改菜单
+export function updateMenu(data) {
+  return request({
+    url: '/menu/update',
+    method: 'post',
+    params: data
+  })
+}
+
+// 删除角色
+export function deleteMenu(data) {
+  return request({
+    url: 'menu/delete/' + data,
+    method: 'get',
+  })
+}
+
+
 
 

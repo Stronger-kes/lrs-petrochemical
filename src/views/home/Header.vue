@@ -43,7 +43,8 @@ export default {
   name: "Home",
   data(){
     return {
-      collapse: false
+      collapse: false,
+      fullscreen:false
     }
   },
   methods: {
