@@ -19,7 +19,8 @@ const TimedTask = () => import("../views/askScheduling/timed");
 const Configure = () => import("../views/codeGeneration/configure")
 const Generation = () => import("../views/codeGeneration/generation");
 const Eximport = () => import("../views/otherModules/Eximport");
-const addDiscount = () =>import('../views/shopGoods/addDiscount.vue')
+const addDiscount = () =>import('../views/shopGoods/addDiscount.vue');
+// const DiscountCoupon = () =>import('../views/reduced/')
 Vue.use(VueRouter);
 
 const routes = [
@@ -31,7 +32,6 @@ const routes = [
       title: "系统首页",
       Authorition: true
     },
-    redirect: "",
     children: [
       {
         path: "/sysDict/listUI",
@@ -148,6 +148,14 @@ const routes = [
     component: Login,
   }
 ]
+
+
+const originalPush = VueRouter.prototype.push
+
+VueRouter.prototype.push = function push(location) {
+  return originalPush.call(this, location).catch(err => err)
+
+}
 
 const router = new VueRouter({
   routes

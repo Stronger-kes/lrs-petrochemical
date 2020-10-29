@@ -243,17 +243,23 @@ export function UnploadPictures(data) {
 
 /**
  * 名称：商品管理页面的List列表
- * URL: "/coupon/pageList"
+ * URL: "/shopGoods/list"
  * 请求方式: POST
  */
 
  export function getPageList(data) {
     return request({
-      url: '/coupon/pageList',
+      url: '/shopGoods/list',
       method: 'post',
       params: data
     })
  }
+
+
+
+ /**
+  *  { }
+  */
 
 
 
