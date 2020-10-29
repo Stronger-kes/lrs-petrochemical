@@ -10,7 +10,7 @@
               角色名称：
               <el-input
                 v-model="roleInput"
-                placeholder="请输入类型"
+                placeholder="请输入角色名称"
                 class="type_input"
               ></el-input>
             </div>
@@ -77,7 +77,7 @@
                   <el-button
                     type="text"
                     size="small"
-                    @click="openUpdata(scope.row)"
+                    @click="updateHandle(scope.row)"
                   >
                     <i class="el-icon-s-tools"></i>
                   </el-button>
@@ -132,13 +132,22 @@
                   :props="props"
                   accordion
                   show-checkbox
+                  node-key="id"
+                  updateKeyChildren=""
                   @check-change="handleCheckChange"
                 >
+                  <!-- :default-checked-keys="defaultCheck" -->
                 </el-tree>
               </el-form-item>
               <el-form-item>
-                <el-button type="primary" @click="submitForm('ruleForm')"
-                  >立即增加</el-button
+                <el-button
+                  type="primary"
+                  @click="
+                    roleTitle == '新增角色'
+                      ? submitForm('ruleForm')
+                      : submitUpdate('ruleForm')
+                  "
+                  >{{ roleTitle }}</el-button
                 >
                 <!-- <el-button @click="resetForm('ruleForm')">重置</el-button> -->
               </el-form-item>
@@ -152,7 +161,13 @@
 </template>
 
 <script>
-import { getRoleList, menuTree, addRole } from "@/api/http.js";
+import {
+  getRoleList,
+  menuTree,
+  addRole,
+  deleteRole,
+  updateRole,
+} from "@/api/http.js";
 
 export default {
   name: "Role",
@@ -167,7 +182,11 @@ export default {
       pageSize: 10,
       dataTree: [],
       rolePower: [],
+      roleString: "",
+      defaultCheck: [],
+      updateId: -1,
       props: {
+        // roleId:"roleId",
         children: "childs",
         label: "title",
       },
@@ -190,23 +209,121 @@ export default {
       },
     };
   },
-  created() {
+  async created() {
     this.getRole();
     this.getMenuList();
   },
   methods: {
+    // 提交修改
+    submitUpdate(formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          //   alert("submit!");
+          var sendRole = "";
+          if (this.rolePower != []) {
+            sendRole = this.rolePower.join(",");
+          } else {
+            sendRole = "";
+          }
+          console.log('发送的权限',sendRole)
+          let data = {
+            roleId: this.updateId,
+            roleName: this.ruleForm.name,
+            remark: this.ruleForm.desc,
+            menuIds: sendRole
+          };
+          updateRole(data).then((res) => {
+            console.log("修改", res);
+            if(res.reslut.data.code){
+              this.clearForm()
+              this.getRole()
+            }
+          });
+        } else {
+          console.log("error submit!!");
+          return false;
+        }
+      });
+    },
+    //表格修改按钮
+    updateHandle(data) {
+      console.log(data);
+      // window.location.reload()
+
+      if (data.menuIds) {
+        var tempArr = data.menuIds.split(",");
+        this.defaultCheck = tempArr;
+        this.rolePower = tempArr;
+        // this.defaultCheck = Object.assign([], this.defaultCheck, tempArr);
+      }
+      this.updateId = data.roleId;
+      this.roleTitle = "修改用户";
+      this.ruleForm.name = data.roleName;
+      this.ruleForm.desc = data.remark;
+    },
+    // 删除方法   打开删除弹框
+    openDelete(data) {
+      this.$confirm("确定删除该字典?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(() => {
+          console.log("要删除的角色", data.roleId);
+          var id = data.roleId;
+          deleteRole(id).then((res) => {
+            if (res.reslut.data.code == 200) {
+              this.getRole();
+              this.$message({
+                type: "success",
+                message: "删除成功!",
+              });
+            }
+            // console.log(res);
+          });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除",
+          });
+        });
+    },
+    // 清空添加修改输入框
+    clearForm() {
+      (this.ruleForm.name = ""),
+        (this.ruleForm.desc = ""),
+        (this.rolePower = []);
+      this.defaultCheck = [];
+      this.roleInput = "";
+    },
     // 添加角色
     addRoleHandle() {
+      // console.log(this.rolePower.join(','))
+      var sendRole = "";
+      if (this.rolePower != []) {
+        sendRole = this.rolePower.join(",");
+      } else {
+        sendRole = "";
+      }
       let data = {
-          roleName:this.ruleForm.name,
-          remark:this.ruleForm.desc,
-          menuIds:this.rolePower,
-          createTime:new Date(),
+        roleName: this.ruleForm.name,
+        remark: this.ruleForm.desc,
+        menuIds: sendRole,
+        // createTime:"",
+        // modifyTime:""
       };
       addRole(data).then((res) => {
         console.log("添加接口", res);
-        if(res){
-            this.ruleForm.name
+        if (res.reslut.data.code == 200) {
+          this.clearForm();
+          this.getRole();
+          this.$message({
+            message: "添加成功",
+            type: "success",
+          });
+        } else {
+          this.$message.error("添加失败");
         }
       });
     },
@@ -225,9 +342,24 @@ export default {
     },
     // 树形方法_复选框
     handleCheckChange(data) {
-      console.log("选中", data);
+      // console.log("选中", data.id);
+      var id = data.id;
+      var index = this.rolePower.findIndex((item) => {
+        return item == id;
+      });
+      // console.log('findIndex',index)
+      // console.log('findIndex',id)
+      if (index == -1) {
+        this.rolePower.push(id);
+      } else {
+        this.rolePower.splice(index, 1);
+      }
+      // this.rolePower.splice(',')
+      console.log(this.rolePower);
     },
-    openAdd() {},
+    openAdd() {
+      (this.roleTitle = "新增角色"), this.clearForm();
+    },
     // 搜索按钮
     searchClick() {
       var tempList = [];
@@ -240,7 +372,8 @@ export default {
     },
     // 刷新按钮
     refreshBtn() {
-      this.roleInput = "";
+      this.clearForm();
+      console.log(this.defaultCheck);
       this.getRole();
     },
     // 获取角色列表
@@ -278,8 +411,8 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-        //   alert("submit!");
-        this.addRoleHandle()
+          //   alert("submit!");
+          this.addRoleHandle();
         } else {
           console.log("error submit!!");
           return false;
@@ -299,9 +432,9 @@ export default {
 }
 .grid-content {
   background-color: #fff;
-  height: 600px;
+  // height: 600px;
   border-radius: 4px;
-  overflow-y: scroll;
+  // overflow-y: scroll;
 }
 .word_header {
   padding: 0px 30px;
@@ -332,5 +465,8 @@ export default {
 }
 .right_main {
   margin-top: 20px;
+}
+.block {
+  margin-top: 10px;
 }
 </style>

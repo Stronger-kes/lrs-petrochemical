@@ -83,6 +83,7 @@ import {getPageList} from '@/api/http.js';
         name: "shopGoods",
         data() {
             return {
+                totalCount: 0,
                 formInline: {
                     user: '',
                     region: '',

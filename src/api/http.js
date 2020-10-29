@@ -144,7 +144,14 @@ export function branchList() {
   })
 }
 
-
+// 新增菜单
+export function addMenu(data) {
+  return request({
+      url: '/menu',
+      method: 'post',
+      params:data
+  })
+}
 
 // 删除用户
 export function deleteUser(data) {
@@ -171,6 +178,14 @@ export function getRoleList(data) {
   })
 }
 
+// 删除角色
+export function deleteMenu(data) {
+  return request({
+    url: 'menu/delete/' + data,
+    method: 'get',
+  })
+}
+
 // 树形菜单
 export function menuTree() {
   return request({
@@ -180,12 +195,38 @@ export function menuTree() {
   })
 }
 
+// 修改菜单
+export function updateMenu(data) {
+  return request({
+    url: '/menu/update',
+    method: 'post',
+    params: data
+  })
+}
+
 // 新增角色
 export function addRole(data) {
   return request({
       url: '/role/add',
       method: 'post',
       params:data
+  })
+}
+
+// 删除角色
+export function deleteRole(data) {
+  return request({
+    url: '/role/delete/' + data,
+    method: 'delete',
+  })
+}
+
+// 修改用户
+export function updateRole(data) {
+  return request({
+    url: '/role/update',
+    method: 'post',
+    params: data
   })
 }
 
@@ -201,14 +242,14 @@ export function UnploadPictures(data) {
 }
 
 /**
- * 名称：商品管理页面
+ * 名称：商品管理页面的List列表
  * URL: "/coupon/pageList"
  * 请求方式: POST
  */
 
  export function getPageList(data) {
     return request({
-      url: '/shopGoods/list',
+      url: '/coupon/pageList',
       method: 'post',
       params: data
     })

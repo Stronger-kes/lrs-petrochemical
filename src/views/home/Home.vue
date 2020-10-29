@@ -31,13 +31,17 @@ import Header from "../home/Header"
 // import Bus from '../../bus';
 export default {
   name: "Home",
-  components: {Sidebar,Header},
+  components: {
+    Sidebar,
+    Header,
+    // Tages
+  },
   data() {
     return {
       collapse: false,
       isCollapse: false,
       fullscreen: false,
-      getList: []
+      getList: [],
     };
   },
   created() {},

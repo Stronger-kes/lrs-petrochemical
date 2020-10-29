@@ -44,7 +44,7 @@ export default {
   data(){
     return {
       collapse: false,
-      fullscreen: false,
+      fullscreen: false
     }
   },
   methods: {
