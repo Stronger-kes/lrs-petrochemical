@@ -20,7 +20,7 @@ const Configure = () => import("../views/codeGeneration/configure")
 const Generation = () => import("../views/codeGeneration/generation");
 const Eximport = () => import("../views/otherModules/Eximport");
 const addDiscount = () =>import('../views/shopGoods/addDiscount.vue');
-// const DiscountCoupon = () =>import('../views/reduced/')
+const DiscountCoupon = () =>import('../views/reduced/DiscountCoupon.vue');
 Vue.use(VueRouter);
 
 const routes = [
@@ -66,7 +66,14 @@ const routes = [
       {
         path: "/manage/reduced",
         name: "reduced",
-        component: Reduced
+        component: Reduced,
+        meta: {title: "优惠券管理"}
+      },
+      {
+        path: "/manage/countCoupon",
+        name: "DiscountCoupon",
+        component: DiscountCoupon,
+        meta: {title: "添加优惠券"}
       },
       {
         path: "/shopGoods/listUI",
@@ -140,6 +147,7 @@ const routes = [
         component: Eximport,
         meta: { title: "其他模块" }
       }
+      
     ]
   },
   {

@@ -82,23 +82,14 @@
       </div>
       <!-- 右侧 -->
       <div class="header_right">
-        <el-button
-          type="primary"
+        <el-button type="primary"
           icon="el-icon-search"
           @click="searchClick"
         ></el-button>
-        <el-button
-          type="primary"
-          icon="el-icon-refresh-right"
-          @click="refreshBtn"
-        ></el-button>
+        <el-button type="primary" icon="el-icon-refresh-right" @click="refreshBtn"></el-button>
         <el-dropdown trigger="click">
           <!-- <span class="el-dropdown-link"> -->
-          <el-button
-            type="primary"
-            icon="el-icon-edit"
-            class="edit_btn"
-          ></el-button>
+          <el-button type="primary" icon="el-icon-edit" class="edit_btn"></el-button>
           <!-- </span> -->
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item @click.native="openAdd"
@@ -317,14 +308,14 @@
             >
           </template>
         </el-table-column>
-        <el-table-column
-          prop="createTime"
-          label="创建时间"
-          sortable
-          width="180"
-          column-key="date"
-        >
-        </el-table-column>
+          <el-table-column
+            prop="createTime"
+            label="创建时间"
+            sortable
+            width="180"
+            column-key="date"
+          >
+          </el-table-column>
         <el-table-column fixed="right" label="操作">
           <template slot-scope="scope">
             <el-button type="text" size="small" @click="dialogVisible = true">
