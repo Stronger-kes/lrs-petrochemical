@@ -2,11 +2,11 @@
     <div class="shop-goods">
         <el-card class="box-card">
             <el-row :gutter="20" class="ele-row">
-                <el-col :span="2"><div class="grid-content bg-purple">全部商品(100)</div></el-col>
-                <el-col :span="2"><div class="grid-content bg-purple">上架商品(10)</div></el-col>
-                <el-col :span="2"><div class="grid-content bg-purple">下架商品(20)</div></el-col>
-                <el-col :span="2"><div class="grid-content bg-purple">已售罄商品(20)</div></el-col>
-                <el-col :span="2"><div class="grid-content bg-purple">库存预警(20)</div></el-col>
+                <el-col :span="3"><div class="grid-content bg-purple">全部商品(100)</div></el-col>
+                <el-col :span="3"><div class="grid-content bg-purple">上架商品(10)</div></el-col>
+                <el-col :span="3"><div class="grid-content bg-purple">下架商品(20)</div></el-col>
+                <el-col :span="3"><div class="grid-content bg-purple">已售罄商品(20)</div></el-col>
+                <el-col :span="3"><div class="grid-content bg-purple">库存预警(20)</div></el-col>
             </el-row>
             <el-form :inline="true" :model="formInline" class="demo-form-inline">
                 <div class="from-one">

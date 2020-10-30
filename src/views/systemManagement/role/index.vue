@@ -41,6 +41,7 @@
                     >新增用户</el-dropdown-item
                   >
                   <el-dropdown-item icon="el-icon-delete-solid"
+                    @click.native="deleteHandle"
                     >删除用户</el-dropdown-item
                   >
                   <el-dropdown-item icon="el-icon-delete-solid"
@@ -214,6 +215,39 @@ export default {
     this.getMenuList();
   },
   methods: {
+    // 全选删除操作
+    deleteHandle() {
+      console.log(this.multipleSelection);
+      var tempDeleteMenu = "";
+      if (this.multipleSelection != []) {
+        tempDeleteMenu = this.multipleSelection.join(",");
+      } else {
+        tempDeleteMenu = "";
+      }
+      console.log("删除数据", tempDeleteMenu);
+      this.$confirm("确定删除选中角色?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(() => {
+          deleteRole(tempDeleteMenu).then((res) => {
+            if (res.reslut.data.code == 200) {
+              this.getRole();
+              this.$message({
+                type: "success",
+                message: "删除成功!",
+              });
+            }
+          });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除",
+          });
+        });
+    },
     // 提交修改
     submitUpdate(formName) {
       this.$refs[formName].validate((valid) => {
@@ -405,7 +439,14 @@ export default {
     },
     // 表格全选
     handleSelectionChange(val) {
-      this.multipleSelection = val;
+      // this.multipleSelection = val;
+      console.log('选中的门店id',val)
+      var tempSelect = []
+      val.forEach((item) => {
+        tempSelect.push(item.roleId)
+      });
+      console.log('选中的门店id',tempSelect)
+      this.multipleSelection = tempSelect;
     },
     // 表单验证
     submitForm(formName) {

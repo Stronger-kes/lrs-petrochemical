@@ -10,15 +10,15 @@ import request from "./request";
  *  login登陆接口
  */
 export function lrsLogin(username, password, verifyCode) {
-    return request({
-      url: '/login',
-      method: 'post',
-      params: {
-        username,
-        password,
-        verifyCode
-      }
-    })
+  return request({
+    url: '/login',
+    method: 'post',
+    params: {
+      username,
+      password,
+      verifyCode
+    }
+  })
 }
 
 /**
@@ -34,11 +34,11 @@ export function getMenu() {
 /**
  * 查询门店接口
  */
-export function storeList() {
+export function storeList(data) {
   return request({
     url: '/shop/sysShopList',
-  method: 'post',
-  // params
+    method: 'post',
+    params: data
   })
 }
 /**
@@ -51,6 +51,24 @@ export function addStore(data) {
     params: data
   })
 }
+
+// 删除门店
+export function deleteStore(data) {
+  return request({
+    url: '/shop/delete/' + data,
+    method: 'delete',
+  })
+}
+
+// 修改门店
+export function updateStore(data) {
+  return request({
+    url: '/shop/update',
+    method: 'post',
+    params: data
+  })
+}
+
 
 /**
  *  获取字典管理列表
@@ -66,7 +84,7 @@ export function getWordList(data) {
  * 
  * 新增字典
  */
-export function addWord(data){
+export function addWord(data) {
   return request({
     url: '/sysDict/save',
     method: 'post',
@@ -79,9 +97,9 @@ export function addWord(data){
  */
 export function updateWord(data) {
   return request({
-      url: '/sysDict/update',
-      method: 'post',
-      params:data
+    url: '/sysDict/update',
+    method: 'post',
+    params: data
   })
 }
 
@@ -90,66 +108,66 @@ export function updateWord(data) {
  */
 export function deleteWord(data) {
   return request({
-      url: '/sysDict/delete/' + data,
-      method: 'get',
-      // params:data
+    url: '/sysDict/delete/' + data,
+    method: 'get',
+    // params:data
   })
 }
 
 // 获取用户管理列表
 export function getUser(data) {
   return request({
-      url: '/user/list?pageNum=' + data.pageNum + 
-      "&pageSize=" + data.pageSize + 
-      '&username=' + data.username + 
-      '&createTimeFrom=' + data.createTimeFrom + 
-      '&createTimeTo=' + data.createTimeTo + 
-      '&status=' + data.status + 
-      '&mobile=' + data.mobile + 
-      '&deptId=' + data.deptId + 
+    url: '/user/list?pageNum=' + data.pageNum +
+      "&pageSize=" + data.pageSize +
+      '&username=' + data.username +
+      '&createTimeFrom=' + data.createTimeFrom +
+      '&createTimeTo=' + data.createTimeTo +
+      '&status=' + data.status +
+      '&mobile=' + data.mobile +
+      '&deptId=' + data.deptId +
       '&sex=' + data.sex,
-      method: 'get',
-      // params:data
+    method: 'get',
+    // params:data
   })
 }
 
 // 新增用户
 export function addUser(data) {
   return request({
-      url: '/user',
-      method: 'post',
-      params:data
+    url: '/user',
+    method: 'post',
+    params: data
   })
 }
 
 // 获取角色列表
 export function roleList() {
   return request({
-      url: '/role/list',
-      method: 'get',
-      // params:{
+    url: '/role/list',
+    method: 'get',
+    // params:{
 
-      // }
+    // }
   })
 }
 
 // 获取部门列表
 export function branchList() {
   return request({
-      url: '/dept/select/tree',
-      method: 'get',
-      // params:{
+    url: '/dept/select/tree',
+    method: 'get',
+    // params:{
 
-      // }
+    // }
   })
 }
 
 // 新增菜单
 export function addMenu(data) {
   return request({
-      url: '/menu',
-      method: 'post',
-      params:data
+    url: '/menu',
+    method: 'post',
+    params: data
   })
 }
 
@@ -207,9 +225,9 @@ export function updateMenu(data) {
 // 新增角色
 export function addRole(data) {
   return request({
-      url: '/role/add',
-      method: 'post',
-      params:data
+    url: '/role/add',
+    method: 'post',
+    params: data
   })
 }
 
@@ -235,7 +253,7 @@ export function updateRole(data) {
  */
 export function UnploadPictures(data) {
   return request({
-    url:'/upload/uploadImage',
+    url: '/upload/uploadImage',
     method: 'post',
     params: data
   })
@@ -247,19 +265,19 @@ export function UnploadPictures(data) {
  * 请求方式: POST
  */
 
- export function getPageList(data) {
-    return request({
-      url: '/shopGoods/list',
-      method: 'post',
-      params: data
-    })
- }
+export function getPageList(data) {
+  return request({
+    url: '/shopGoods/list',
+    method: 'post',
+    params: data
+  })
+}
 
 
 
- /**
-  *  { }
-  */
+/**
+ *  { }
+ */
 
 
 
