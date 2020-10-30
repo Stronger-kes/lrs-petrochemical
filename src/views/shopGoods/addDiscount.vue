@@ -9,8 +9,8 @@
             <div class="discount_main">
                 <el-form :inline="true" :model="formInline" class="demo-form-inline">
                     <el-form-item label="商品类型：">
-                        <el-select v-model="goodsType.lable" placeholder="请选择" class="ele-select">
-                            <el-option  v-for="(item,index) in goodsType" :key="index" :label="item.lable" :value="item.value"></el-option>
+                        <el-select v-model="goodsType.lable" placeholder="请选择" class="ele-select" @change="shopType">
+                            <el-option  v-for="item in goodsType" :key="item.value" :label="item.lable" :value="item.value"></el-option>
                         </el-select>
                     </el-form-item>
                     <el-form-item label="商品分类：">
@@ -27,7 +27,7 @@
                         </el-select>
                     </el-form-item>
                     <el-form-item label="商品门店：" class="el-item-f">
-                        <el-select v-model="formInline.region" placeholder="请选择" style="width:311%;">
+                        <el-select v-model="formInline.region" placeholder="请选择" style="width:319%;">
                             <el-option label="区域一" value="shanghai"></el-option>
                             <el-option label="区域二" value="beijing"></el-option>
                         </el-select>
@@ -39,7 +39,7 @@
                             <el-input class="ele-select" v-model="formInline.unit" placeholder="审批人"></el-input>
                     </el-form-item>
                      <el-form-item label="商品排序：" class="el-item-f">
-                        <el-input v-model="formInline.costPrice" placeholder="审批人" style="width:334%;"></el-input>
+                        <el-input v-model="formInline.costPrice" placeholder="审批人" style="width:343%;"></el-input>
                     </el-form-item>
                     <!-- 上传商图片 -->
                      <el-form-item label="商品图片：" class="el-item-f">
@@ -107,7 +107,7 @@
                     </el-form-item>
                     <!-------------------------- 优惠卷： ------------------------->
                     <div>
-                        <el-form-item class="" label="优惠券：">
+                        <el-form-item class="" label="优惠券："  v-show="dataType">
                             <span class="titFont" @click="getDialog">添加商品优惠券<i class="el-icon-right"></i></span>
                         </el-form-item>
                         <el-dialog title="选择优惠卷" :visible.sync="show" width="70%" center>
@@ -134,16 +134,8 @@
                                         <el-table-column label="日期" width="120">
                                             <template slot-scope="scope">{{ scope.row.date }}</template>
                                         </el-table-column>
-                                        <el-table-column
-                                            prop="name"
-                                            label="优惠劵名称"
-                                            width="120">
-                                        </el-table-column>
-                                        <el-table-column
-                                            prop="address"
-                                            label="优惠劵类型"
-                                            show-overflow-tooltip>
-                                        </el-table-column>
+                                        <el-table-column prop="name" label="优惠劵名称" width="120"></el-table-column>
+                                        <el-table-column prop="address" label="优惠劵类型" show-overflow-tooltip></el-table-column>
                                         <el-table-column
                                             prop="address"
                                             label="门槛"
@@ -179,7 +171,6 @@
                             </span>
                         </el-dialog>
                     </div>
-                    <ComponentsModal middleTitle="老旧小区改造"></ComponentsModal>
                     
                     <!-------------------------- 其他设置： ------------------------->
                     <el-form-item class="lable-title el-item-f" label="其他设置："></el-form-item>
@@ -263,16 +254,17 @@
 
 <script>
 import { quillEditor } from 'vue-quill-editor'; // 导入富文本
-import ComponentsModal from '../../components/common/ComponentsModal'
 import 'quill/dist/quill.core.css'
 import 'quill/dist/quill.snow.css'
 import 'quill/dist/quill.bubble.css'
     export default {
-        components: {quillEditor,ComponentsModal},
+        components: {quillEditor},
         name: "addDiscount",
         data() {
             return {
-        multipleSelection: [],
+                dataList: 0,
+                dataType:false,
+                multipleSelection: [],
                 goodsType:[
                     {value: "0",lable:"实物商品",},
                     {value: "1",lable:"优惠券",},
@@ -362,6 +354,23 @@ import 'quill/dist/quill.bubble.css'
             },
             getDialog() {
                 this.show = true;
+            },
+            // 商品类型下拉
+            shopType(val) {
+                if(val == 1) {
+
+                    this.dataType = true;
+                    console.log(this.dataType);
+                }else if(val == 0){
+                    this.dataType = false;
+                }
+               
+                console.log("val=========================>",val);
+            }
+        },
+        watch:{
+            goodsType(val) {
+                console.log(val);
             }
         }
     }
@@ -369,7 +378,7 @@ import 'quill/dist/quill.bubble.css'
 
 <style lang="scss" scoped>
 .discount_main {margin-top: 30px;}
-.el-form-item {width: 27%;}
+.el-form-item {width: 30%;}
 .ele-select {width: 130%;}
 .el-item-f {
     width: 100%;

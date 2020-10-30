@@ -176,6 +176,7 @@ import {getPageList} from '@/api/http.js';
   .bg-purple:hover{
       background-color: #409EFF;
       cursor:pointer;
+      color: #fff;
   }
   .grid-content {
     border-radius: 4px;

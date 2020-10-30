@@ -275,9 +275,40 @@ export function getPageList(data) {
 
 
 
+ /**
+  *  营销中心->优惠券管理
+  *  URL: "/coupon/pageList"
+  *  请求方式 POST
+  */
+export function getCouponPageList(params) {
+  return request({
+    url: '/coupon/pageList',
+    method: 'post',
+    params
+  })
+}
+
 /**
- *  { }
+ * 优惠券管理-查询优惠券信息信息
+ * URL: "/coupon/{couponId}"
+ * 请求方式 GET
  */
+export function CouponManagementEnquiry() {
+  return request({
+    url: '/coupon/{couponId}',
+    method: 'GET',
+  })
+}
 
-
-
+/**
+ * 优惠券管理-修改优惠券信息
+ * URL:"/coupon/update"
+ * 请求方式： PUT
+ */
+export function getCouponUpdate(data) {
+  return request({
+    url: '/coupon/update',
+    method: 'PUT',
+    params: data
+  })
+}

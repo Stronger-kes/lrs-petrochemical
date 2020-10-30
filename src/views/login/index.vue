@@ -26,7 +26,7 @@
               <div class="verify_box">
                 <div class="input_verify">
                   <el-form-item prop="code">
-                    <el-input type="text" placeholder="图形验证码" v-model="loginForm.verifyCode"></el-input>
+                    <el-input type="text" placeholder="图形验证码" prefix-icon="lj-icon-yanzhengma" v-model="loginForm.verifyCode"></el-input>
                   </el-form-item>
                 </div>
                 <img class="verify" :src="imgUrl" :alt="imgUrl" @click="changeVerify" />
