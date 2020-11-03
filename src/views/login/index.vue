@@ -17,11 +17,11 @@
             <el-form ref="loginFormRef" :model="loginForm" :rules="loginFormRules" label-width="0px">
               <!-- 用户名 -->
               <el-form-item prop="userName">
-                <el-input v-model="loginForm.userName" prefix-icon="el-icon-user-solid"></el-input>
+                <el-input v-model="loginForm.userName" prefix-icon="el-icon-user-solid" placeholder="请输入用户名"></el-input>
               </el-form-item>
               <!-- 密码 -->
               <el-form-item prop="passWord">
-                <el-input type="password" v-model="loginForm.passWord" prefix-icon="el-icon-lock"></el-input>
+                <el-input type="password" v-model="loginForm.passWord" prefix-icon="el-icon-lock" placeholder="请输入用户密码"></el-input>
               </el-form-item>
               <div class="verify_box">
                 <div class="input_verify">
@@ -53,9 +53,9 @@ export default {
       // 这是表单数据登录的数据绑定对象
       imgUrl: "",
       loginForm: {
-        userName: "yangming",
-        passWord: "1234qwer",
-        verifyCode: "",
+        userName: "yangming",// yangming
+        passWord: "1234qwer",// 1234qwer
+        verifyCode: "", 
       },
       // 这是表单验证
       loginFormRules: {
@@ -99,29 +99,36 @@ export default {
       this.getVerifyCode();
     },
     //表单提交按钮
-    submitButton() {
+     submitButton() {
       this.$refs.loginFormRef.validate((valid) => {
         if (!valid) return;
         lrsLogin(
           this.loginForm.userName,
           this.loginForm.passWord,
           this.loginForm.verifyCode
-        ).then(
-          (res) => {
-            if (res.flag !== 1) {
-              this.$message.error("登录失败");
-            } else {
-              localStorage.setItem("token", res.reslut.data.data);
-
-              this.$router.push({
+        ).then((res) => {
+            let userName = res.reslut.data.data.user;
+            let token = res.reslut.data.data.token;
+            console.log(userName,"dadadadadadada");
+            if(res.reslut.data.code && res.reslut.data.code === 200) {
+                localStorage.setItem("token", token);
+                localStorage.setItem("user", JSON.stringify(userName));
+                this.$router.push({
                  path:"/index"
               });
+            }else {
+              this.$message.error("登录失败");
             }
-          },
-          (err) => {
-            console.log(err);
-          }
-        );
+            // }
+            // if (res.flag !== 1) {
+            //   this.$message.error("登录失败");
+            // } else {
+            //   localStorage.setItem("token", res.reslut.data.data);
+            //   this.$router.push({
+            //      path:"/index"
+            //   });
+            // }
+          });
       });
     },
   },

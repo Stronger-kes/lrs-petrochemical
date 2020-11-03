@@ -27,9 +27,8 @@
                         </el-select>
                     </el-form-item>
                     <el-form-item label="商品门店：" class="el-item-f">
-                        <el-select v-model="formInline.region" placeholder="请选择" style="width:319%;">
-                            <el-option label="区域一" value="shanghai"></el-option>
-                            <el-option label="区域二" value="beijing"></el-option>
+                         <el-select v-model="formInline.name" placeholder="请选择商品所属门店">
+                            <el-option :label="item.name" :value="item.id" v-for="item in outlet" :key="item.id"></el-option>
                         </el-select>
                     </el-form-item>
                     <el-form-item label="商品名称：">
@@ -39,11 +38,18 @@
                             <el-input class="ele-select" v-model="formInline.unit" placeholder="审批人"></el-input>
                     </el-form-item>
                      <el-form-item label="商品排序：" class="el-item-f">
-                        <el-input v-model="formInline.costPrice" placeholder="审批人" style="width:343%;"></el-input>
+                        <el-input v-model="formInline.sort" placeholder="审批人" style="width:343%;"></el-input>
                     </el-form-item>
                     <!-- 上传商图片 -->
                      <el-form-item label="商品图片：" class="el-item-f">
-                        <el-upload action="#" list-type="picture-card" :auto-upload="false">
+                         <!--<el-upload 
+                            action="/upload/uploadImage" 
+                            list-type="picture-card" 
+                            :auto-upload="false"
+                            :file-list="productImgs"
+                            :multiple="isMultiple"
+                            :on-preview="handlePictureCardPreview"
+                            >
                          <i slot="default" class="el-icon-plus"></i>
                             <div slot="file" slot-scope="{file}">
                                 <img class="el-upload-list__item-thumbnail" :src="file.url" alt="">
@@ -62,7 +68,25 @@
                         </el-upload>
                         <el-dialog :visible.sync="dialogVisible">
                             <img width="100%" :src="dialogImageUrl" alt="">
-                        </el-dialog>
+                        </el-dialog> -->
+                        <el-upload
+                                action="/upload/uploadImage"
+                                list-type="picture-card"
+                                accept="image/*"
+                                :limit="imgLimit"
+                                :file-list="productImgs"
+                                :multiple="isMultiple"
+                                :on-preview="handlePictureCardPreview"
+                                :on-remove="handleRemove"
+                                :on-success="handleAvatarSuccess"
+                                :before-upload="beforeAvatarUpload"
+                                :on-exceed="handleExceed"
+                                :on-error="imgUploadError">
+                                <i class="el-icon-plus"></i>
+                            </el-upload>
+                            <el-dialog :visible.sync="dialogVisible">
+                                <img width="100%" :src="dialogImageUrl" alt="">
+                            </el-dialog>
                     </el-form-item>
                     <!-------------------------- 规格信息： ------------------------->
                     <el-form-item class="lable-title el-item-f" label="商品信息："></el-form-item>
@@ -194,7 +218,7 @@
                                 <el-input class="table-text" v-model="formInline.user" placeholder="审批人"></el-input>
                             </el-form-item>
                         </div>
-                        <div class="">
+                        <div class>
                             <el-checkbox style="top:12px;" size="medium" v-model="checked"></el-checkbox>
                             <el-form-item label="永久限购：" prop="activestate" class="purchasing">
                                 <div class="itmeer" style="margin-left: -20px;">
@@ -257,6 +281,7 @@ import { quillEditor } from 'vue-quill-editor'; // 导入富文本
 import 'quill/dist/quill.core.css'
 import 'quill/dist/quill.snow.css'
 import 'quill/dist/quill.bubble.css'
+import {addTheGoods,getFindUnameByUid} from '@/api/http.js';
     export default {
         components: {quillEditor},
         name: "addDiscount",
@@ -264,36 +289,45 @@ import 'quill/dist/quill.bubble.css'
             return {
                 dataList: 0,
                 dataType:false,
-                multipleSelection: [],
+                // productImgs: [], //上传的文件列表, 例如: [{name: 'food.jpg', url: 'https://xxx.cdn.com/xxx.jpg'}]
+                //  isMultiple: true, //是否支持多选文件
+                //  // 点击文件列表中已上传的文件时的钩子
+                // multipleSelection: [],
+                dialogImageUrl: '',
+                dialogVisible: false,
+                productImgs: [],
+                isMultiple: true,
+                imgLimit: 6,
                 goodsType:[
                     {value: "0",lable:"实物商品",},
                     {value: "1",lable:"优惠券",},
                     {value: "2",lable:"充值卡",}
                 ],
+                outlet: [],
                 content: '',
                 editorOption: {},
                 flag:false,
                 disabled: false,
-                dialogVisible: false,
-                dialogImageUrl: "",
                 checked: true,
                 formInline: {
-                    name: '', // 商品名称
-                    unit: '', // 
-                    costPrice:'',// 商品排序
+                    name: '', // 门店名称
+                    unit: '', //  商品单位
+                    sort:'',// 商品排序
+                    // 商品品牌
+                    // 商品分类
                     region: '',
                     date1: "",
                     date2:""
                 },
                 // 商品规格
                 ShopsPecification:{
-                    // 成本价
+                    costPrice: '', // 成本价
                     sellPrice: '',// 商品售价
                     crossedPrice: '',// 划线价格
                     stock: '', // 库存数量
                     stockWarn: '',// 库存预警
                     virtualSales:'', // 虚拟销量
-                    // 虚拟已购
+                    // 虚拟已购 ? 
                 },
                 tableData1:[
                     {
@@ -325,27 +359,39 @@ import 'quill/dist/quill.bubble.css'
             }
         },
         created() {
-            
+            this.getFindUnameByUId();
         },
         methods:{
             // 返回商品管理
             goBack() {
                 this.$router.push({path: '/shopGoods/listUI'});
             },
+            // 获取商品门店
+            async getFindUnameByUId() {
+                let username = JSON.parse(localStorage.getItem("user")); 
+                let { reslut:{data: {code,data}}} = await getFindUnameByUid(username.userId);
+                if(code === 200) {
+                    this.outlet = data;
+                }   
+            },
             SwitchOff(callback) {
                 console.log(callback);
             },
             addSubmit() {
                 let data = {
-                    date1:this.GivePreferential.date1,
-                    date2:this.GivePreferential.date2, 
+                    date1: this.GivePreferential.date1,
+                    date2: this.GivePreferential.date2, 
                     perType: this.GivePreferential.perType,
-                    perNum:this.GivePreferential.perNum
+                    perNum: this.GivePreferential.perNum
                 }
                 this.GivePreferential.push(data);
             },
-            // 提交
-            submitForm() {},
+            // 发布提交接口
+           async submitForm() {  
+                let data = {};
+                let { reslut } =  await addTheGoods(data)
+                console.log(reslut);
+            },
             // 重置按钮
             resetForm() {},
             // 富文本按钮

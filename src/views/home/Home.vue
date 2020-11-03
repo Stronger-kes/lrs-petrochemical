@@ -5,46 +5,56 @@
       <el-container>
         <el-header>
           <Header></Header>
-          <!-- <Tages></Tages> -->
         </el-header>
-        <div class="box-card">
-          sdadad
+        <div class="box-card" >
+         <Tages></Tages>
         </div>
         <el-main>
-          <div class="content">
-                <transition name="move" mode="out-in">
-                    <keep-alive>
-                        <router-view></router-view>
-                    </keep-alive>
-                </transition>
-                <el-backtop target=".content"></el-backtop>
-            </div>
+           
+          <div class="content" :class="{'content-collapse':collapse}">
+            <transition name="move" mode="out-in">
+              <keep-alive :include="tagsList">
+                <router-view></router-view>
+              </keep-alive>
+            </transition>
+          </div>
         </el-main>
       </el-container>
     </el-container>
   </div>
 </template>
 <script>
-// import Tages from "@/components/common/Tages";
+import Tages from "@/components/common/Tages";
 import Sidebar from "../home/Sidebar";
-import Header from "../home/Header"
-// import Bus from '../../bus';
+import Header from "../home/Header";
+import Bus from '../../bus';
 export default {
   name: "Home",
   components: {
     Sidebar,
     Header,
-    // Tages
+    Tages
   },
   data() {
     return {
       collapse: false,
       isCollapse: false,
       fullscreen: false,
-      getList: [],
+      tagsList: [],
     };
   },
-  created() {},
+  created() {
+    Bus.$on("collapse-content", (msg) => {
+      this.collapse = msg;
+    });
+    Bus.$on('tags', msg => {
+            let arr = [];
+            for (let i = 0, len = msg.length; i < len; i++) {
+                msg[i].name && arr.push(msg[i].name);
+            }
+            this.tagsList = arr;
+    });
+  },
   methods: {},
 };
 </script>
@@ -137,10 +147,10 @@ export default {
 }
 
 .el-menu-item.is-active {
-     color: #fff !important;
+  color: #fff !important;
 }
-.el-main{
-  background-color: #F9F9F9 ;
+.el-main {
+  background-color: #f9f9f9;
   padding: 15px;
 }
 

@@ -24,11 +24,10 @@ export function lrsLogin(username, password, verifyCode) {
 /**
  * 菜单列表接口
  */
-export function getMenu() {
+export function getMenu(data) {
   return request({
-    url: `/menu/yangming`,
-    method: "get",
-    // data
+    url: '/menu/' + data,
+    method: 'GET',
   })
 }
 /**
@@ -69,6 +68,33 @@ export function updateStore(data) {
   })
 }
 
+
+/**
+ * 
+ * 根据用户id查询门店信息接口
+ * URL: /shop/findUnameByUid/{id}
+ * 请求方式：POST
+ */
+export function getFindUnameByUid(data) {
+  return request({
+    url: '/shop/findUnameByUid/' + data,
+    method: 'post'
+  })
+}
+
+/**
+ * 
+ * 品牌管理-根据id查找品牌
+ * URL:"/sysBrand/findById/{number}"
+ * 请求方式： GET
+ */
+
+ export function brandIdentity(data) {
+   return request({
+     url: '/sysBrand/findById/' + data,
+     method: 'GET'
+   })
+ }
 
 /**
  *  获取字典管理列表
@@ -260,20 +286,9 @@ export function UnploadPictures(data) {
 }
 
 /**
- * 名称：商品管理页面的List列表
- * URL: "/shopGoods/list"
- * 请求方式: POST
+ * 
+ * ========================优惠券接口====================================>
  */
-
-export function getPageList(data) {
-  return request({
-    url: '/shopGoods/list',
-    method: 'post',
-    params: data
-  })
-}
-
-
 
  /**
   *  营销中心->优惠券管理
@@ -310,5 +325,88 @@ export function getCouponUpdate(data) {
     url: '/coupon/update',
     method: 'PUT',
     params: data
+  })
+}
+
+/**
+ * 优惠券管理-新增优惠券
+ * URL: /coupon/add
+ * 请求方式 POST
+ */
+
+ export function addCouponUpdate(data) {
+  return request({
+    url: '/coupon/add',
+    method: 'post',
+    params: data
+  })
+ }  
+
+ /**
+  * 优惠券管理-根据id删除优惠券
+  * Url: "/coupon/delete/{couponId}"
+  * 请求方式 GET
+  */
+ export function removerCouponUpdate(data) {
+   return request({
+     url:'/coupon/delete/' + data,
+     method: 'GET',
+   })
+ }
+
+
+/**
+ * ===============================商品管理=======================================
+ */
+
+ /**
+ * 名称：商品管理页面的List列表
+ * URL: "/shopGoods/list"
+ * 请求方式: POST
+ */
+
+export function getPageList(data) {
+  return request({
+    url: '/shopGoods/list',
+    method: 'post',
+    params: data
+  })
+}
+
+/**
+ * 名称： 商品管理
+ * URL: '/shopGoods/save'
+ * 请求方式： POST
+ */
+ export function addTheGoods(data){
+   return request({
+     url: '/shopGoods/save',
+     method: 'POST',
+     data
+   })
+ }
+
+/**
+ * 名称： 修改商品
+ * URL: '/shopGoods/update'
+ * 请求方式： POST
+ */
+ export function updatedTheGoods(data) {
+   return request({
+      url: '/shopGoods/update',
+      method: 'POST',
+      params: data
+   })
+ }
+/**
+ * 名称： 删除商品
+ * URL: '/shopGoods/delete'
+ * 请求方式： GET
+ */
+export function deleteTheGoods(data){
+  return request({
+    url: '/shopGoods/delete',
+    method: 'GET',
+    params:data
   })
 }

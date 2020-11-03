@@ -25,7 +25,7 @@
                     </el-form-item>
                 </div>
                 <div class="from-tow">
-                    <el-form-item label="关键字查询：" style="width: 30%; margin-left:15px;">
+                    <el-form-item label="关键字查询：" style="width: 30%;">
                         <el-input v-model="keyword" style="width: 108%;" placeholder="请输入优惠券查询"></el-input>
                     </el-form-item>
                     <el-form-item style="margin-left: 97px;">
@@ -60,10 +60,10 @@
                         </template>
                     </el-table-column>
                     <el-table-column align="center" prop="address" label="操作">
-                        <template>
-                                <!-- <el-switch v-model="value"  active-color="#13ce66" inactive-color="#ff4949"></el-switch> -->
-                                <el-button type="primary" icon="el-icon-edit" circle></el-button>
-                                 <el-button type="danger" icon="el-icon-delete" circle></el-button>
+                        <template slot-scope="scope">
+                                <!-- <el-switch v-model="value"  active-color="#13ce66" inactive-color="#ff4949"></el-switch>  couponNum-->
+                                <el-button type="primary" icon="el-icon-edit" @click="removeShop(scope.row)" circle></el-button>
+                                <el-button type="danger" v-show="scope.row.isDelete == 1? true : false" icon="el-icon-delete" @click="removeShop(scope.row)" circle></el-button>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -87,11 +87,12 @@
 </template>
 
 <script>
-import { getCouponPageList,getCouponUpdate } from '@/api/http.js';
+import { getCouponPageList, getCouponUpdate, removerCouponUpdate } from '@/api/http.js';
   export default {
     name: 'reduced',
     data() {
       return {
+          createtime: "", // 开始时间 结束时间
             tableData: [] ,
             formDateList: [
                 {coupon: "折扣券",couponType: "1",},
@@ -114,12 +115,12 @@ import { getCouponPageList,getCouponUpdate } from '@/api/http.js';
             pageNum: 1,
             pageSize: 10,
             totalCount: 0,
-            createtime: "",
             loading: true,
       }
     },
     created() {
         this.getCommitList();
+        console.log("开始时间结束时间",this.createtime);
     },
     methods: {
        async getCommitList() {
@@ -141,6 +142,7 @@ import { getCouponPageList,getCouponUpdate } from '@/api/http.js';
             submitForm() {this.getCommitList();},
             resetForm() {
                 this.couponType = this.couponState = this.keyword = "";
+                this.getCommitList();
             },
            async switchChange(row) {
                 const data = {id: row.couponNum,couponState: row.couponState};
@@ -151,6 +153,21 @@ import { getCouponPageList,getCouponUpdate } from '@/api/http.js';
                     this.$message.error("网络出现问题，请重试！");
                     this.getCommitList();
                 }
+            },
+            // 删除列表页面的接口
+           async removeShop(val) {
+              const res = await removerCouponUpdate( val.couponNum);
+              if(res.reslut.data.code === '200' || res.reslut.data.code === 200) {
+                   this.getCommitList();
+                   this.$message.success('删除成功!');
+              }else if(res.reslut.data.code === 500) {
+                  this.getCommitList();
+                   this.$message.error(res.reslut.data.message);
+              }else if(res.reslut.data.code === 403) {
+                    this.getCommitList();
+                   this.$message.error(res.reslut.data.message);
+              }
+              console.log(res);
             },
             //券类型
             qType(val) { this.couponType = val; },
