@@ -136,12 +136,25 @@
             </el-form-item>
             <el-form-item label="部门" prop="branch">
               <el-select
-                v-model="ruleForm.branch"
-                placeholder="请选择部门"
+                v-model="ruleForm.branchFirst"
+                placeholder="请选择一级门店"
                 @change="branchVal"
               >
                 <el-option
                   v-for="(item, index) in branchListMes"
+                  :key="index"
+                  :label="item.data.name"
+                  :value="item.data.id"
+                ></el-option>
+              </el-select>
+              <el-select
+                v-model="ruleForm.branchChild"
+                placeholder="请选择二级门店"
+                @change="branchVal"
+                v-if="branchChildShow"
+              >
+                <el-option
+                  v-for="(item, index) in branchChildList"
                   :key="index"
                   :label="item.name"
                   :value="item.id"
@@ -175,7 +188,7 @@
       </div>
       <!-- 修改用户弹框 -->
       <div>
-        <el-dialog title="修改用户" :visible.sync="updataBox">
+        <el-dialog title="修改用户" :visible.sync="updataBox" @close="closeDialog">
           <el-form
             :model="ruleForm"
             :rules="rules"
@@ -208,12 +221,25 @@
             </el-form-item>
             <el-form-item label="部门" prop="branch">
               <el-select
-                v-model="ruleForm.branch"
-                placeholder="请选择部门"
+                v-model="ruleForm.branchFirst"
+                placeholder="请选择一级门店"
                 @change="branchVal"
               >
                 <el-option
                   v-for="(item, index) in branchListMes"
+                  :key="index"
+                  :label="item.data.name"
+                  :value="item.data.id"
+                ></el-option>
+              </el-select>
+              <el-select
+                v-model="ruleForm.branchChild"
+                placeholder="请选择二级门店"
+                @change="branchVal"
+                v-if="branchChildShow"
+              >
+                <el-option
+                  v-for="(item, index) in branchChildList"
                   :key="index"
                   :label="item.name"
                   :value="item.id"
@@ -376,12 +402,15 @@ export default {
       dialogVisible: false,
       dialogFormVisible: false,
       updataBox: false,
+      branchChildShow: false,
       ruleForm: {
         username: "",
         phone: "",
         email: "",
         role: "",
-        branch: "",
+        branch: Number,
+        branchFirst: "",
+        branchChild: "",
         status: 1,
         sex: 2,
         desc: "",
@@ -428,6 +457,9 @@ export default {
     };
   },
   methods: {
+    closeDialog(){
+      this.clearAdd()
+    },
     // 全选删除操作
     deleteHandle() {
       console.log(this.multipleSelection);
@@ -483,6 +515,7 @@ export default {
       this.ruleForm.desc = data.description;
       this.updataBox = true;
       this.updateId = data.id;
+      this.ruleForm.branchFirst = data.data.deptId
     },
     // 提交修改
     updateClick() {
@@ -563,9 +596,18 @@ export default {
       console.log("角色值", val);
       this.ruleForm.role = val;
     },
+    // 部门选择
     branchVal(val) {
       console.log("部门值", val);
       this.ruleForm.branch = val;
+      this.branchListMes.forEach((item)=>{
+        if(item.id == val){
+            this.branchChildShow = item.hasChild
+            if(item.hasChild){
+              this.branchChildList = item.children
+            }
+        }
+      })
     },
     // 清空新增
     clearAdd() {
@@ -577,6 +619,9 @@ export default {
       this.ruleForm.role = "";
       this.ruleForm.status = 1;
       this.ruleForm.desc = "";
+      this.ruleForm.branchFirst = "";
+      this.ruleForm.branchChild = "";
+      this.branchChildShow = false;
     },
     // 新增用户
     newAddUser() {
@@ -597,6 +642,10 @@ export default {
           this.dialogFormVisible = false;
           this.clearAdd();
           this.getUserList();
+          this.$message({
+            message: '添加成功',
+            type: "success",
+          });
         } else {
           this.$message({
             message: res.reslut.data.message,

@@ -48,12 +48,12 @@
           </el-table-column>
           <el-table-column prop="name" label="门店名称" width="180">
           </el-table-column>
-          <el-table-column prop="createtime" label="创建时间" width="220">
+          <el-table-column prop="createtime" label="创建时间" width="180">
           </el-table-column>
           <el-table-column prop="phone" label="电话" width="180">
           </el-table-column>
           <el-table-column prop="cityid" label="城市"> </el-table-column>
-          <el-table-column prop="address" label="详细地址" width="240">
+          <el-table-column prop="address" label="详细地址" width="280">
           </el-table-column>
           <el-table-column prop="principal" label="负责人"> </el-table-column>
           <el-table-column fixed="right" label="状态" width="100">
@@ -117,11 +117,11 @@ export default {
         //   label: "请选择门店状态",
         // },
         {
-          value: "0",
+          value: 0,
           label: "禁用",
         },
         {
-          value: "1",
+          value: 1,
           label: "有效",
         },
       ],
