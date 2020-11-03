@@ -34,7 +34,9 @@
             <el-dropdown-item icon="el-icon-circle-plus" @click.native="openAdd"
               >新增用户</el-dropdown-item
             >
-            <el-dropdown-item icon="el-icon-delete-solid"
+            <el-dropdown-item
+              icon="el-icon-delete-solid"
+              @click.native="deleteHandle"
               >删除用户</el-dropdown-item
             >
           </el-dropdown-menu>
@@ -202,7 +204,7 @@ export default {
       typeText: "",
       sortText: "",
       descText: "",
-      updateId:-1,
+      updateId: -1,
       totalCount: 0,
       tableData: [],
       multipleSelection: [],
@@ -214,6 +216,39 @@ export default {
     };
   },
   methods: {
+    // 全选删除操作
+    deleteHandle() {
+      console.log(this.multipleSelection);
+      var tempDeleteMenu = "";
+      if (this.multipleSelection != []) {
+        tempDeleteMenu = this.multipleSelection.join(",");
+      } else {
+        tempDeleteMenu = "";
+      }
+      console.log("删除数据", tempDeleteMenu);
+      this.$confirm("确定删除选中字典?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(() => {
+          deleteWord(tempDeleteMenu).then((res) => {
+            if (res.reslut.data.code == 200) {
+              this.getList();
+              this.$message({
+                type: "success",
+                message: "删除成功!",
+              });
+            }
+          });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除",
+          });
+        });
+    },
     // 打开删除弹框
     openDelete(data) {
       this.$confirm("确定删除该字典?", "提示", {
@@ -222,8 +257,8 @@ export default {
         type: "warning",
       })
         .then(() => {
-          console.log('要删除的字典',data.id);
-          var id = data.id
+          console.log("要删除的字典", data.id);
+          var id = data.id;
           deleteWord(id).then((res) => {
             console.log(res);
           });
@@ -251,7 +286,7 @@ export default {
     // 打开修改
     openUpdata(data) {
       // console.log('修改对象',data)
-      this.updateId = data.id
+      this.updateId = data.id;
       this.keyText = data.value;
       this.labelText = data.label;
       this.typeText = data.type;
@@ -262,7 +297,7 @@ export default {
     // 提交修改
     updateClick() {
       let data = {
-        id:this.updateId,
+        id: this.updateId,
         value: this.keyText,
         label: this.labelText,
         type: this.typeText,
@@ -333,7 +368,13 @@ export default {
     },
     // 表格全选
     handleSelectionChange(val) {
-      this.multipleSelection = val;
+      // console.log('选中表格元素',val)
+      var tempSelect = []
+      val.forEach((item) => {
+        tempSelect.push(item.id)
+      });
+      // console.log('选中的门店id',tempSelect)
+      this.multipleSelection = tempSelect;
     },
     // 获取字典列表
     getList() {

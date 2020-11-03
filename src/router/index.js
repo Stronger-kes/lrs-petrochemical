@@ -7,6 +7,8 @@ const Role = () => import("../views/systemManagement/role");
 const sysDict = () => import("../views/systemManagement/listUI");
 const Menu = () => import("../views/systemManagement/menuManagement/index.vue");
 const Department = () => import("../views/systemManagement/department/index.vue");
+const AddStore = () => import("../views/systemManagement/department/AddStore.vue");
+const EditStore = () => import("../views/systemManagement/department/EditStore.vue");
 const shopGoods = () => import("../views/shopGoods");
 const Reduced = () => import("../views/reduced");
 const Online = () => import("../views/systemMonitoring/online");
@@ -62,6 +64,20 @@ const routes = [
         name: "Department",
         component: Department,
         meta: { title: "部门管理" }
+      },
+       // 添加门店
+       {
+        path:'/system/addstore',
+        name:'AddStore',
+        component:AddStore,
+        meta: { title: "添加门店" }
+      },
+      // 编辑门店
+      {
+        path:'/system/editstore',
+        name:'EditStore',
+        component:EditStore,
+        meta: { title: "编辑门店" }
       },
       {
         path: "/manage/reduced",

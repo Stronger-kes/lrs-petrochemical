@@ -95,7 +95,7 @@
             <el-dropdown-item @click.native="openAdd"
               >新增用户</el-dropdown-item
             >
-            <el-dropdown-item>删除用户</el-dropdown-item>
+            <el-dropdown-item @click.native="deleteHandle">删除用户</el-dropdown-item>
             <el-dropdown-item>密码重置</el-dropdown-item>
             <el-dropdown-item>导出Excel</el-dropdown-item>
           </el-dropdown-menu>
@@ -428,6 +428,39 @@ export default {
     };
   },
   methods: {
+    // 全选删除操作
+    deleteHandle() {
+      console.log(this.multipleSelection);
+      var tempDeleteMenu = "";
+      if (this.multipleSelection != []) {
+        tempDeleteMenu = this.multipleSelection.join(",");
+      } else {
+        tempDeleteMenu = "";
+      }
+      console.log("删除数据", tempDeleteMenu);
+      this.$confirm("确定删除选中用户?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(() => {
+          deleteUser(tempDeleteMenu).then((res) => {
+            if (res.reslut.data.code == 200) {
+              this.getUserList();
+              this.$message({
+                type: "success",
+                message: "删除成功!",
+              });
+            }
+          });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除",
+          });
+        });
+    },
     // 查看关闭
     handleClose(done) {
       this.$confirm("确认关闭？")
@@ -682,7 +715,13 @@ export default {
     },
     // 表格全选
     handleSelectionChange(val) {
-      this.multipleSelection = val;
+      // this.multipleSelection = val;
+      var tempSelect = []
+      val.forEach((item) => {
+        tempSelect.push(item.id)
+      });
+      console.log('选中的门店id',tempSelect)
+      this.multipleSelection = tempSelect;
     },
   },
   created() {
