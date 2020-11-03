@@ -7,7 +7,9 @@ module.exports = {
         // target: 'http://test.vue.longshihua.cn/shop/', // 代理的域名
         // target: 'http://192.168.1.20:8085', // 代理的域名  安
         // target: 'http://192.168.1.35:8085', // 代理的域名
-        target: 'http://www.longshihua.cn:8085/', // 代理的域名 龙瑞森生产环境
+        // target: 'http://www.longshihua.cn:8085/', // 代理的域名 龙瑞森生产环境
+        target: 'http://192.168.1.37:8085/', // 杨哥的本地192.168.1.37:8085
+        // target: 'http://192.168.1.35:8086/', // 慧慧的本地http://192.168.1.35:8045/
         pathRewrite: { '^/API': '/' }  // 如果你的真实的api路径中没有/API这一个路径，把这句加上，如果本来就有/API这一路径的话，这句一定要去掉，要不然会导致域名找不到的
       }
     }

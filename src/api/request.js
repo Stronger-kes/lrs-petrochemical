@@ -11,9 +11,9 @@ const service = axios.create({
 
 // // 请求拦截
 service.interceptors.request.use(config => {
-    console.log(config, "请求拦截===========>")
+    console.log(config, "请求拦截===========>");
     if(config.url !== "login") {
-        const token = localStorage.getItem("token");
+        let token = localStorage.getItem('token');
          // 配置头信息，在封装的request请求中去写
         config.headers["Content-Type"] = token;
     }
@@ -25,7 +25,7 @@ service.interceptors.response.use(reslut => {
     console.log(reslut,"响应拦截================>");
     let res = reslut;
     let status = res.status;
-    let token = res.data.data;
+    let token = res.data.data.token;
     console.log(token,"token=========================>")
     if (status == 200) {
         token && localStorage.setItem("token", token);

@@ -65,10 +65,11 @@ export default {
   },
   methods: {
    async getMenuList() {
-        let res = await getMenu().then((res));
-        if (res.status && res.status === 200) {
-          this.menuList = res.reslut.data.data.childs;
-        }
+      let userToken = JSON.parse(localStorage.getItem('user'));
+      let res = await getMenu(userToken.username);
+      if (res.status && res.status === 200) {
+        this.menuList = res.reslut.data.data.childs;
+      }
     },
     handleOpen(key, keyPath) {
       this.$router.push({ path: keyPath[1] });
